@@ -970,19 +970,7 @@ tr:focus-within .td-actions {
           <p class="unsimp-desc">Antes da otimização, cada pessoa devia diretamente a quem pagou — gerando 11 transações. O algoritmo reduziu para 3 PIX sem mudar nenhum centavo.</p>
           <div class="table-wrap">
             <table class="unsimp-table">
-              <tbody id="unsimp-tbody">
-                <tr><td><span class="chip ju">Ju</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip rafa">Rafa</span></td><td style="color:var(--ink-soft);font-size:12px;">compras PG</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$293,12</td></tr>
-                <tr><td><span class="chip higor">Higor</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip rafa">Rafa</span></td><td style="color:var(--ink-soft);font-size:12px;">compras PG</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$293,12</td></tr>
-                <tr><td><span class="chip joao">João</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip rafa">Rafa</span></td><td style="color:var(--ink-soft);font-size:12px;">compras PG</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$293,12</td></tr>
-                <tr><td><span class="chip rafa">Rafa</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip joao">João</span></td><td style="color:var(--ink-soft);font-size:12px;">combustível</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$150,00</td></tr>
-                <tr><td><span class="chip ju">Ju</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip joao">João</span></td><td style="color:var(--ink-soft);font-size:12px;">combustível</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$150,00</td></tr>
-                <tr><td><span class="chip higor">Higor</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip joao">João</span></td><td style="color:var(--ink-soft);font-size:12px;">combustível</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$150,00</td></tr>
-                <tr><td><span class="chip rafa">Rafa</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip ju">Ju</span></td><td style="color:var(--ink-soft);font-size:12px;">ubers + caipi</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$169,76</td></tr>
-                <tr><td><span class="chip higor">Higor</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip ju">Ju</span></td><td style="color:var(--ink-soft);font-size:12px;">ubers</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$97,26</td></tr>
-                <tr><td><span class="chip joao">João</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip ju">Ju</span></td><td style="color:var(--ink-soft);font-size:12px;">ubers</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$97,26</td></tr>
-                <tr><td><span class="chip rafa">Rafa</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip higor">Higor</span></td><td style="color:var(--ink-soft);font-size:12px;">AQA</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$40,00</td></tr>
-                <tr><td><span class="chip ju">Ju</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip higor">Higor</span></td><td style="color:var(--ink-soft);font-size:12px;">AQA</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$40,00</td></tr>
-              </tbody>
+              <tbody id="unsimp-tbody"></tbody>
             </table>
           </div>
           <p class="unsimp-footer">3 PIX em vez de 11 — economia de 8 transações 🎉</p>
@@ -1117,7 +1105,8 @@ tr:focus-within .td-actions {
             byPayer[tx.paidBy].push(tx);
           });
 
-        container.innerHTML = Object.entries(byPayer).map(([payer, txs]) => {
+        container.innerHTML = PEOPLE.filter(p => byPayer[p]).map(payer => {
+          const txs = byPayer[payer];
           const color      = PEOPLE_COLORS[payer] || 'coral';
           const label      = PEOPLE_LABELS[payer] || payer;
           const total      = txs.reduce((s, tx) => s + tx.amount, 0);
@@ -1499,126 +1488,130 @@ tr:focus-within .td-actions {
       btn.textContent = 'Enviar'; btn.disabled = false;
     });
 
-// ── Transaction CRUD ──────────────────────────────────────
-let _editingTxId = null;
+    // ── Transaction CRUD ──────────────────────────────────────
+    let _editingTxId = null;
 
-function openAddModal() {
-  _editingTxId = null;
-  document.getElementById('modal-title').textContent = 'Nova transação';
-  document.getElementById('m-date').value   = '';
-  document.getElementById('m-desc').value   = '';
-  document.getElementById('m-amount').value = '';
-  document.getElementById('m-bucket').value = 'pg';
-  // Payer: deselect all
-  document.querySelectorAll('#m-paidby .person-toggle').forEach(btn => {
-    btn.className = 'person-toggle';
-  });
-  // Split: select all by default
-  document.querySelectorAll('#m-split .person-toggle').forEach(btn => {
-    btn.classList.add('active-' + btn.dataset.person);
-  });
-  document.getElementById('tx-modal').classList.add('open');
-  document.getElementById('m-date').focus();
-}
+    function openAddModal() {
+      _editingTxId = null;
+      document.getElementById('modal-title').textContent = 'Nova transação';
+      document.getElementById('m-date').value   = '';
+      document.getElementById('m-desc').value   = '';
+      document.getElementById('m-amount').value = '';
+      document.getElementById('m-bucket').value = 'pg';
+      // Payer: deselect all
+      document.querySelectorAll('#m-paidby .person-toggle').forEach(btn => {
+        btn.className = 'person-toggle';
+      });
+      // Split: select all by default
+      document.querySelectorAll('#m-split .person-toggle').forEach(btn => {
+        btn.classList.add('active-' + btn.dataset.person);
+      });
+      document.getElementById('tx-modal').classList.add('open');
+      document.getElementById('m-date').focus();
+    }
 
-function openEditModal(txId) {
-  const tx = store.transactions.find(t => t.id === txId);
-  if (!tx) return;
-  _editingTxId = txId;
-  document.getElementById('modal-title').textContent = 'Editar transação';
-  document.getElementById('m-date').value   = tx.date;
-  document.getElementById('m-desc').value   = tx.desc;
-  document.getElementById('m-amount').value = tx.amount;
-  document.getElementById('m-bucket').value = tx.bucket;
-  // Payer
-  document.querySelectorAll('#m-paidby .person-toggle').forEach(btn => {
-    btn.className = 'person-toggle';
-    if (btn.dataset.person === tx.paidBy) btn.classList.add('active-' + tx.paidBy);
-  });
-  // Split
-  document.querySelectorAll('#m-split .person-toggle').forEach(btn => {
-    btn.className = 'person-toggle';
-    if (tx.splitAmong.includes(btn.dataset.person)) btn.classList.add('active-' + btn.dataset.person);
-  });
-  document.getElementById('tx-modal').classList.add('open');
-}
+    function openEditModal(txId) {
+      const tx = store.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      _editingTxId = txId;
+      document.getElementById('modal-title').textContent = 'Editar transação';
+      document.getElementById('m-date').value   = tx.date;
+      document.getElementById('m-desc').value   = tx.desc;
+      document.getElementById('m-amount').value = tx.amount;
+      document.getElementById('m-bucket').value = tx.bucket;
+      // Payer
+      document.querySelectorAll('#m-paidby .person-toggle').forEach(btn => {
+        btn.className = 'person-toggle';
+        if (btn.dataset.person === tx.paidBy) btn.classList.add('active-' + tx.paidBy);
+      });
+      // Split
+      document.querySelectorAll('#m-split .person-toggle').forEach(btn => {
+        btn.className = 'person-toggle';
+        if (tx.splitAmong.includes(btn.dataset.person)) btn.classList.add('active-' + btn.dataset.person);
+      });
+      document.getElementById('tx-modal').classList.add('open');
+    }
 
-function closeModal() {
-  document.getElementById('tx-modal').classList.remove('open');
-  _editingTxId = null;
-}
+    function closeModal() {
+      document.getElementById('tx-modal').classList.remove('open');
+      _editingTxId = null;
+    }
 
-function selectPayer(btn) {
-  document.querySelectorAll('#m-paidby .person-toggle').forEach(b => b.className = 'person-toggle');
-  btn.classList.add('active-' + btn.dataset.person);
-}
+    function selectPayer(btn) {
+      document.querySelectorAll('#m-paidby .person-toggle').forEach(b => b.className = 'person-toggle');
+      btn.classList.add('active-' + btn.dataset.person);
+    }
 
-function toggleSplit(btn) {
-  const cls = 'active-' + btn.dataset.person;
-  if (btn.classList.contains(cls)) {
-    btn.classList.remove(cls);
-  } else {
-    btn.classList.add(cls);
-  }
-}
+    function toggleSplit(btn) {
+      const cls = 'active-' + btn.dataset.person;
+      if (btn.classList.contains(cls)) {
+        btn.classList.remove(cls);
+      } else {
+        btn.classList.add(cls);
+      }
+    }
 
-async function saveTx() {
-  const date   = document.getElementById('m-date').value.trim();
-  const desc   = document.getElementById('m-desc').value.trim();
-  const amount = parseFloat(document.getElementById('m-amount').value);
-  const bucket = document.getElementById('m-bucket').value;
-  const payerBtn  = document.querySelector('#m-paidby .person-toggle[class*="active-"]');
-  const splitBtns = document.querySelectorAll('#m-split .person-toggle[class*="active-"]');
+    async function saveTx() {
+      const date   = document.getElementById('m-date').value.trim();
+      const desc   = document.getElementById('m-desc').value.trim();
+      const amount = parseFloat(document.getElementById('m-amount').value);
+      const bucket = document.getElementById('m-bucket').value;
+      const payerBtn  = document.querySelector('#m-paidby .person-toggle[class*="active-"]');
+      const splitBtns = document.querySelectorAll('#m-split .person-toggle[class*="active-"]');
 
-  if (!desc)                  { alert('Preencha a descrição.'); return; }
-  if (!amount || amount <= 0) { alert('Valor inválido.'); return; }
-  if (!payerBtn)              { alert('Selecione quem pagou.'); return; }
-  if (splitBtns.length === 0) { alert('Selecione ao menos uma pessoa no split.'); return; }
+      if (!desc)                  { alert('Preencha a descrição.'); return; }
+      if (!amount || amount <= 0) { alert('Valor inválido.'); return; }
+      if (!payerBtn)              { alert('Selecione quem pagou.'); return; }
+      if (splitBtns.length === 0) { alert('Selecione ao menos uma pessoa no split.'); return; }
 
-  const paidBy     = payerBtn.dataset.person;
-  const splitAmong = Array.from(splitBtns).map(b => b.dataset.person);
+      const paidBy     = payerBtn.dataset.person;
+      const splitAmong = Array.from(splitBtns).map(b => b.dataset.person);
 
-  const btn = document.getElementById('modal-save-btn');
-  btn.textContent = 'Salvando…'; btn.disabled = true;
+      const btn = document.getElementById('modal-save-btn');
+      btn.textContent = 'Salvando…'; btn.disabled = true;
 
-  if (_editingTxId) {
-    const tx = store.transactions.find(t => t.id === _editingTxId);
-    Object.assign(tx, { date, desc, amount, bucket, paidBy, splitAmong });
-  } else {
-    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    store.transactions.push({ id, date, desc, amount, bucket, paidBy, splitAmong, comprovante: null });
-  }
+      // Snapshot for rollback
+      const snapshot = JSON.parse(JSON.stringify(store.transactions));
 
-  try {
-    await persist();
-    closeModal();
-    renderBuckets();
-    recalculate();
-  } catch {
-    alert('Erro ao salvar. Tenta de novo.');
-  }
-  btn.textContent = 'Salvar'; btn.disabled = false;
-}
+      if (_editingTxId) {
+        const tx = store.transactions.find(t => t.id === _editingTxId);
+        Object.assign(tx, { date, desc, amount, bucket, paidBy, splitAmong });
+      } else {
+        const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        store.transactions.push({ id, date, desc, amount, bucket, paidBy, splitAmong, comprovante: null });
+      }
 
-async function deleteTx(txId) {
-  if (!confirm('Remover esta transação?')) return;
-  store.transactions = store.transactions.filter(t => t.id !== txId);
-  try {
-    await persist();
-    renderBuckets();
-    recalculate();
-  } catch {
-    alert('Erro ao remover. Tenta de novo.');
-  }
-}
+      try {
+        await persist();
+        closeModal();
+        renderBuckets();
+        recalculate();
+      } catch {
+        store.transactions = snapshot;
+        alert('Erro ao salvar. Tenta de novo.');
+      }
+      btn.textContent = 'Salvar'; btn.disabled = false;
+    }
 
-// Combined Escape key handler (replaces old closeLightbox-only listener)
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeModal();
-    closeLightbox();
-  }
-});
+    async function deleteTx(txId) {
+      if (!confirm('Remover esta transação?')) return;
+      store.transactions = store.transactions.filter(t => t.id !== txId);
+      try {
+        await persist();
+        renderBuckets();
+        recalculate();
+      } catch {
+        alert('Erro ao remover. Tenta de novo.');
+      }
+    }
+
+    // Combined Escape key handler (replaces old closeLightbox-only listener)
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeModal();
+        closeLightbox();
+      }
+    });
   </script>
 </body>
 </html>
