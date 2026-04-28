@@ -881,7 +881,17 @@
         <div id="cards-caipi"></div>
       </div>
 
-      <!-- BUCKET 3: AQA -->
+      <!-- BUCKET 3: Festinha -->
+      <div class="bucket">
+        <div class="bucket-head">
+          <h3 class="bucket-title">Festinha 🍬</h3>
+          <span class="bucket-people">÷ Rafa, Higor &amp; Ju</span>
+        </div>
+        <p class="bucket-desc">Kit festinha — cada um deve sua parte proporcional. Entrega dividida entre os três.</p>
+        <div id="cards-fest"></div>
+      </div>
+
+      <!-- BUCKET 4: AQA -->
       <div class="bucket">
         <div class="bucket-head">
           <span class="bucket-num">03</span>
@@ -906,6 +916,7 @@
               <th>Pessoa</th>
               <th class="num">PG</th>
               <th class="num">Caipi.</th>
+              <th class="num">Fest.</th>
               <th class="num">AQA</th>
               <th class="num">Devia</th>
               <th class="num">Pagou</th>
@@ -917,6 +928,7 @@
               <td><span class="chip rafa">Rafa</span></td>
               <td class="num" data-balance-cell="rafa-pg">R$540,38</td>
               <td class="num" data-balance-cell="rafa-caipi">R$72,50</td>
+              <td class="num muted" data-balance-cell="rafa-fest">—</td>
               <td class="num" data-balance-cell="rafa-aqa">R$40,00</td>
               <td class="num bold" data-balance-cell="rafa-total">R$652,88</td>
               <td class="num" data-balance-cell="rafa-paid">R$1.172,46</td>
@@ -926,6 +938,7 @@
               <td><span class="chip ju">Ju</span></td>
               <td class="num" data-balance-cell="ju-pg">R$540,38</td>
               <td class="num" data-balance-cell="ju-caipi">R$72,50</td>
+              <td class="num muted" data-balance-cell="ju-fest">—</td>
               <td class="num" data-balance-cell="ju-aqa">R$40,00</td>
               <td class="num bold" data-balance-cell="ju-total">R$652,88</td>
               <td class="num" data-balance-cell="ju-paid">R$534,05</td>
@@ -935,6 +948,7 @@
               <td><span class="chip higor">Higor</span></td>
               <td class="num" data-balance-cell="higor-pg">R$540,38</td>
               <td class="num muted" data-balance-cell="higor-caipi">—</td>
+              <td class="num muted" data-balance-cell="higor-fest">—</td>
               <td class="num" data-balance-cell="higor-aqa">R$40,00</td>
               <td class="num bold" data-balance-cell="higor-total">R$580,38</td>
               <td class="num" data-balance-cell="higor-paid">R$120,00</td>
@@ -944,6 +958,7 @@
               <td><span class="chip joao">João</span></td>
               <td class="num" data-balance-cell="joao-pg">R$540,38</td>
               <td class="num muted" data-balance-cell="joao-caipi">—</td>
+              <td class="num muted" data-balance-cell="joao-fest">—</td>
               <td class="num muted" data-balance-cell="joao-aqa">—</td>
               <td class="num bold" data-balance-cell="joao-total">R$540,38</td>
               <td class="num" data-balance-cell="joao-paid">R$600,00</td>
@@ -1322,7 +1337,8 @@
     const BUCKETS = [
       { id:'pg',    label:'Praia Grande',        num:'01' },
       { id:'caipi', label:'Caipirinhas + pastel', num:'02' },
-      { id:'aqa',   label:'Araraquara',           num:'03' },
+      { id:'fest',  label:'Festinha 🍬',          num:'03' },
+      { id:'aqa',   label:'Araraquara',           num:'04' },
     ];
 
     const DEFAULT_TRANSACTIONS = [
@@ -1381,11 +1397,17 @@
       // One-time data migrations — each runs exactly once, tracked by id
       const MIGRATIONS = [
         {
-          id: 'caipi-28apr-2026',
+          // Removes any wrong caipi entries and adds correct festinha transactions
+          id: 'fest-28apr-2026',
           run() {
+            store.transactions = store.transactions.filter(
+              t => t.id !== 'caipi28apr-drinks' && t.id !== 'caipi28apr-entrega'
+            );
             store.transactions.push(
-              { id: 'caipi28apr-drinks',  date: '28/04', desc: '4 caipirinhas',      amount: 240, bucket: 'caipi', paidBy: 'rafa', splitAmong: ['rafa','higor','ju'], comprovante: null },
-              { id: 'caipi28apr-entrega', date: '28/04', desc: 'Entrega caipirinhas', amount: 20, bucket: 'caipi', paidBy: 'rafa', splitAmong: ['rafa','higor','ju'], comprovante: null }
+              { id: 'fest28apr-higor',   date: '28/04', desc: 'Bebida bala 🍬', amount: 90,  bucket: 'fest', paidBy: 'rafa', splitAmong: ['higor'],             comprovante: null },
+              { id: 'fest28apr-ju',      date: '28/04', desc: 'Bebida bala 🍬', amount: 30,  bucket: 'fest', paidBy: 'rafa', splitAmong: ['ju'],                comprovante: null },
+              { id: 'fest28apr-rafa',    date: '28/04', desc: 'Bebida bala 🍬', amount: 120, bucket: 'fest', paidBy: 'rafa', splitAmong: ['rafa'],              comprovante: null },
+              { id: 'fest28apr-entrega', date: '28/04', desc: 'Entrega',         amount: 20,  bucket: 'fest', paidBy: 'rafa', splitAmong: ['rafa','higor','ju'], comprovante: null }
             );
           }
         }
