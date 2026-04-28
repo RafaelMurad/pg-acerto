@@ -677,6 +677,163 @@
       max-width: 36em;
       margin: 0 auto;
     }
+
+/* Row action buttons */
+.td-actions {
+  width: 1px;
+  white-space: nowrap;
+  padding: 6px 8px !important;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+tr:hover .td-actions,
+tr:focus-within .td-actions {
+  opacity: 1;
+}
+@media (hover: none) {
+  .td-actions { opacity: 1; }
+}
+.row-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 4px;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.row-btn:hover { opacity: 1; }
+
+/* Floating add button */
+.fab {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 28px;
+  padding: 14px 22px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(30,94,91,0.35);
+  z-index: 100;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(30,94,91,0.45); }
+.fab:active { transform: translateY(0); }
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(42,31,20,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-soft);
+  border-radius: 16px;
+  padding: 28px 24px 24px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 12px 40px rgba(42,31,20,0.2);
+}
+.modal h3 {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.modal-field {
+  margin-bottom: 14px;
+}
+.modal-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+.modal-field input[type="text"],
+.modal-field input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  color: var(--ink);
+}
+.modal-field input:focus { outline: none; border-color: var(--teal); }
+.person-toggles {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.person-toggle {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.person-toggle.active-rafa   { background: var(--coral); border-color: var(--coral); color: #fff; }
+.person-toggle.active-ju     { background: var(--pink);  border-color: var(--pink);  color: #fff; }
+.person-toggle.active-higor  { background: var(--teal);  border-color: var(--teal);  color: #fff; }
+.person-toggle.active-joao   { background: var(--gold);  border-color: var(--gold);  color: #fff; }
+.modal-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  color: var(--ink);
+}
+.modal-field select:focus { outline: none; border-color: var(--teal); }
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.modal-save {
+  flex: 1;
+  padding: 12px;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.modal-save:disabled { opacity: 0.5; cursor: default; }
+.modal-cancel {
+  padding: 12px 20px;
+  background: none;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
@@ -861,6 +1018,65 @@
     </footer>
 
   </div>
+
+<!-- Floating Add Button -->
+<button class="fab" onclick="openAddModal()">+ transação</button>
+
+<!-- Transaction Modal -->
+<div id="tx-modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title">Nova transação</h3>
+
+    <div class="modal-field">
+      <label>Data (dd/mm)</label>
+      <input type="text" id="m-date" placeholder="ex: 18/04" maxlength="5" />
+    </div>
+
+    <div class="modal-field">
+      <label>Descrição</label>
+      <input type="text" id="m-desc" placeholder="ex: Mercado" maxlength="80" />
+    </div>
+
+    <div class="modal-field">
+      <label>Valor (R$)</label>
+      <input type="number" id="m-amount" placeholder="0,00" min="0.01" step="0.01" />
+    </div>
+
+    <div class="modal-field">
+      <label>Quem pagou</label>
+      <div class="person-toggles" id="m-paidby">
+        <button type="button" class="person-toggle" data-person="rafa"  onclick="selectPayer(this)">Rafa</button>
+        <button type="button" class="person-toggle" data-person="ju"    onclick="selectPayer(this)">Ju</button>
+        <button type="button" class="person-toggle" data-person="higor" onclick="selectPayer(this)">Higor</button>
+        <button type="button" class="person-toggle" data-person="joao"  onclick="selectPayer(this)">João</button>
+      </div>
+    </div>
+
+    <div class="modal-field">
+      <label>Dividir entre</label>
+      <div class="person-toggles" id="m-split">
+        <button type="button" class="person-toggle" data-person="rafa"  onclick="toggleSplit(this)">Rafa</button>
+        <button type="button" class="person-toggle" data-person="ju"    onclick="toggleSplit(this)">Ju</button>
+        <button type="button" class="person-toggle" data-person="higor" onclick="toggleSplit(this)">Higor</button>
+        <button type="button" class="person-toggle" data-person="joao"  onclick="toggleSplit(this)">João</button>
+      </div>
+    </div>
+
+    <div class="modal-field">
+      <label>Grupo (bucket)</label>
+      <select id="m-bucket">
+        <option value="pg">Praia Grande</option>
+        <option value="caipi">Caipirinhas + pastel</option>
+        <option value="aqa">Araraquara</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-save" id="modal-save-btn" onclick="saveTx()">Salvar</button>
+      <button type="button" class="modal-cancel" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
 
   <!-- Lightbox -->
   <div id="lightbox" class="lightbox" onclick="closeLightbox()">
