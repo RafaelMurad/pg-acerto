@@ -693,30 +693,9 @@
 
     <section class="hero">
       <div class="eyebrow">⚡ Acerto final</div>
-      <h2>Três PIX e a gente fecha tudo.</h2>
-      <div class="pix-row">
-        <div class="pix-from">
-          <span class="chip lg higor">Higor</span>
-          <span class="arrow">→</span>
-          <span class="chip lg rafa">Rafa</span>
-        </div>
-        <div class="pix-amount">R$460,38</div>
-      </div>
-      <div class="pix-row">
-        <div class="pix-from">
-          <span class="chip lg ju">Ju</span>
-          <span class="arrow">→</span>
-          <span class="chip lg rafa">Rafa</span>
-        </div>
-        <div class="pix-amount">R$59,20</div>
-      </div>
-      <div class="pix-row">
-        <div class="pix-from">
-          <span class="chip lg ju">Ju</span>
-          <span class="arrow">→</span>
-          <span class="chip lg joao">João</span>
-        </div>
-        <div class="pix-amount">R$59,62</div>
+      <h2 id="pix-headline">Três PIX e a gente fecha tudo.</h2>
+      <div id="pix-rows">
+        <!-- dynamically rendered by recalculate() -->
       </div>
     </section>
 
@@ -731,103 +710,10 @@
         </div>
         <p class="bucket-desc">Mercados, ubers, kiosk, pedágio e combustível da viagem. Todo mundo entra na divisão.</p>
         <p class="date-note">ℹ️ As datas são as reais da compra. Nos extratos Monzo/bancários elas aparecem com 1 dia de atraso — é o tempo de processamento/liquidação do cartão internacional.</p>
-
-        <!-- Rafa's card -->
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="label accent-coral">Pago por</div>
-              <div class="paid-by">
-                <span class="chip rafa">Rafa</span>
-                <span class="paid-by-amount">R$1.172,46</span>
-              </div>
-            </div>
-            <div>
-              <div class="label">Divisão</div>
-              <div class="split-note">÷ 4 (todos)</div>
-            </div>
-          </div>
-          <table>
-            <tbody>
-              <tr><td class="td-date">18/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-nossocanto" spellcheck="false">Mp Nossocanto</td><td class="td-amount">R$231,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_01_mp_nossocanto.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-oxxo" spellcheck="false">Oxxo Xixova</td><td class="td-amount">R$17,29 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_02_oxxo_xixova.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-carrefour" spellcheck="false">Carrefour</td><td class="td-amount">R$370,05 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_04_carrefour.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-pao-15" spellcheck="false">Pão de Açúcar</td><td class="td-amount">R$15,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_05_pao_de_acucar.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-bk" spellcheck="false">Burger King</td><td class="td-amount">R$77,70 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_02_burger_king.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-uber-a" spellcheck="false">Uber</td><td class="td-amount">R$34,97 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_03_uber_a.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-uber-b" spellcheck="false">Uber</td><td class="td-amount">R$35,98 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_04_uber_b.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-tenda" spellcheck="false">Tenda Atacado</td><td class="td-amount">R$19,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_05_tenda_atacado.png')">comprovante</button></td></tr>
-
-              <tr><td class="td-date">19/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-pao-8175" spellcheck="false">Pão de Açúcar — cervejas, último dia</td><td class="td-amount">R$81,75 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_08_pao_de_acucar_c.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-extra" spellcheck="false">Mercado Extra</td><td class="td-amount">R$108,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_09_mercado_extra.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-kiosk" spellcheck="false">Kiosk — porção (÷4)</td><td class="td-amount">R$180,00 <button class="comp-btn" onclick="openLightbox('comprovantes/kiosk_porcao.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc" contenteditable="true" data-tx="rafa-pao-024" spellcheck="false">Pão de Açúcar</td><td class="td-amount">R$0,24 <button class="comp-btn" onclick="openLightbox('comprovantes/21apr_01_pao_de_acucar.png')">comprovante</button></td></tr>
-            </tbody>
-          </table>
-          <div class="card-foot">
-            <span class="label">Por pessoa</span>
-            <span class="per-person coral">R$293,12 cada</span>
-          </div>
-        </div>
-
-        <!-- João's card -->
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="label accent-gold">Pago por</div>
-              <div class="paid-by">
-                <span class="chip joao">João</span>
-                <span class="paid-by-amount">R$600,00</span>
-              </div>
-            </div>
-            <div>
-              <div class="label">Divisão</div>
-              <div class="split-note">÷ 4 (todos)</div>
-            </div>
-          </div>
-          <table>
-            <tbody>
-              <tr><td class="td-desc" contenteditable="true" data-tx="joao-comb" spellcheck="false">Combustível</td><td class="td-amount">R$350,00 <button class="comp-btn" onclick="openLightbox('comprovantes/joao_combustivel.jpg')">comprovante</button></td></tr>
-              <tr><td class="td-desc" contenteditable="true" data-tx="joao-pedagio" spellcheck="false">Pedágio</td><td class="td-amount">R$200,00</td></tr>
-              <tr><td class="td-desc" contenteditable="true" data-tx="joao-reab" spellcheck="false">Reabastecimento almoço</td><td class="td-amount">R$50,00</td></tr>
-            </tbody>
-          </table>
-          <div class="card-foot">
-            <span class="label">Por pessoa</span>
-            <span class="per-person gold">R$150,00 cada</span>
-          </div>
-        </div>
-
-        <!-- Ju's Uber card -->
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="label accent-pink">Pago por</div>
-              <div class="paid-by">
-                <span class="chip ju">Ju</span>
-                <span class="paid-by-amount">R$389,05</span>
-              </div>
-            </div>
-            <div>
-              <div class="label">Divisão</div>
-              <div class="split-note">÷ 4 (todos)</div>
-            </div>
-          </div>
-          <table>
-            <tbody>
-              <tr><td class="td-date">18/04</td><td class="td-desc" contenteditable="true" data-tx="ju-uber-a" spellcheck="false">Uber</td><td class="td-amount">R$189,99 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc" contenteditable="true" data-tx="ju-uber-b" spellcheck="false">Uber</td><td class="td-amount">R$199,06 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
-            </tbody>
-          </table>
-          <div class="card-foot">
-            <span class="label">Por pessoa</span>
-            <span class="per-person pink">R$97,26 cada</span>
-          </div>
-        </div>
-
+        <div id="cards-pg"></div>
         <div class="bucket-total">
           <span class="bucket-total-label">Total bucket Praia Grande</span>
-          <span class="bucket-total-value">R$2.161,51 — R$540,38 <span class="each">cada</span></span>
+          <span class="bucket-total-value" id="bucket-total-pg">R$2.161,51 — R$540,38 <span class="each">cada</span></span>
         </div>
       </div>
 
@@ -839,32 +725,7 @@
           <span class="bucket-people">÷ 2 (Rafa &amp; Ju)</span>
         </div>
         <p class="bucket-desc">Só o Rafa e a Ju consumiram, então rachado entre os dois. (Kiosk — porção de R$180 já contabilizada no bucket 01.)</p>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="label accent-pink">Pago por</div>
-              <div class="paid-by">
-                <span class="chip ju">Ju</span>
-                <span class="paid-by-amount">R$145,00</span>
-              </div>
-            </div>
-            <div>
-              <div class="label">Divisão</div>
-              <div class="split-note">÷ 2 (Rafa &amp; Ju)</div>
-            </div>
-          </div>
-          <table>
-            <tbody>
-              <tr><td class="td-desc" contenteditable="true" data-tx="ju-caipi" spellcheck="false">3 caipirinhas (R$40 cada)</td><td class="td-amount">R$120,00</td></tr>
-              <tr><td class="td-desc" contenteditable="true" data-tx="ju-pastel" spellcheck="false">Pastel</td><td class="td-amount">R$25,00</td></tr>
-            </tbody>
-          </table>
-          <div class="card-foot">
-            <span class="label">Por pessoa</span>
-            <span class="per-person pink">R$72,50 cada</span>
-          </div>
-        </div>
+        <div id="cards-caipi"></div>
       </div>
 
       <!-- BUCKET 3: AQA -->
@@ -875,32 +736,7 @@
           <span class="bucket-people">÷ 3 (sem o João)</span>
         </div>
         <p class="bucket-desc">Pedágio + combustível do rolê pra Araraquara. João não foi nessa, então fica de fora.</p>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="label accent-teal">Pago por</div>
-              <div class="paid-by">
-                <span class="chip higor">Higor</span>
-                <span class="paid-by-amount">R$120,00</span>
-              </div>
-            </div>
-            <div>
-              <div class="label">Divisão</div>
-              <div class="split-note">÷ 3 (sem João)</div>
-            </div>
-          </div>
-          <table>
-            <tbody>
-              <tr><td class="td-desc" contenteditable="true" data-tx="higor-pedagio" spellcheck="false">Pedágio</td><td class="td-amount">R$70,00</td></tr>
-              <tr><td class="td-desc" contenteditable="true" data-tx="higor-comb" spellcheck="false">Combustível</td><td class="td-amount">R$50,00</td></tr>
-            </tbody>
-          </table>
-          <div class="card-foot">
-            <span class="label">Por pessoa</span>
-            <span class="per-person teal">R$40,00 cada</span>
-          </div>
-        </div>
+        <div id="cards-aqa"></div>
       </div>
 
     </section>
@@ -923,42 +759,42 @@
               <th class="num">Saldo</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="balance-tbody">
             <tr>
               <td><span class="chip rafa">Rafa</span></td>
-              <td class="num">R$540,38</td>
-              <td class="num">R$72,50</td>
-              <td class="num">R$40,00</td>
-              <td class="num bold">R$652,88</td>
-              <td class="num">R$1.172,46</td>
-              <td class="num balance-cell pos">+R$519,58</td>
+              <td class="num" data-balance-cell="rafa-pg">R$540,38</td>
+              <td class="num" data-balance-cell="rafa-caipi">R$72,50</td>
+              <td class="num" data-balance-cell="rafa-aqa">R$40,00</td>
+              <td class="num bold" data-balance-cell="rafa-total">R$652,88</td>
+              <td class="num" data-balance-cell="rafa-paid">R$1.172,46</td>
+              <td class="num balance-cell pos" data-balance-cell="rafa-net">+R$519,58</td>
             </tr>
             <tr>
               <td><span class="chip ju">Ju</span></td>
-              <td class="num">R$540,38</td>
-              <td class="num">R$72,50</td>
-              <td class="num">R$40,00</td>
-              <td class="num bold">R$652,88</td>
-              <td class="num">R$534,05</td>
-              <td class="num balance-cell neg">−R$118,83</td>
+              <td class="num" data-balance-cell="ju-pg">R$540,38</td>
+              <td class="num" data-balance-cell="ju-caipi">R$72,50</td>
+              <td class="num" data-balance-cell="ju-aqa">R$40,00</td>
+              <td class="num bold" data-balance-cell="ju-total">R$652,88</td>
+              <td class="num" data-balance-cell="ju-paid">R$534,05</td>
+              <td class="num balance-cell neg" data-balance-cell="ju-net">−R$118,83</td>
             </tr>
             <tr>
               <td><span class="chip higor">Higor</span></td>
-              <td class="num">R$540,38</td>
-              <td class="num muted">—</td>
-              <td class="num">R$40,00</td>
-              <td class="num bold">R$580,38</td>
-              <td class="num">R$120,00</td>
-              <td class="num balance-cell neg">−R$460,38</td>
+              <td class="num" data-balance-cell="higor-pg">R$540,38</td>
+              <td class="num muted" data-balance-cell="higor-caipi">—</td>
+              <td class="num" data-balance-cell="higor-aqa">R$40,00</td>
+              <td class="num bold" data-balance-cell="higor-total">R$580,38</td>
+              <td class="num" data-balance-cell="higor-paid">R$120,00</td>
+              <td class="num balance-cell neg" data-balance-cell="higor-net">−R$460,38</td>
             </tr>
             <tr>
               <td><span class="chip joao">João</span></td>
-              <td class="num">R$540,38</td>
-              <td class="num muted">—</td>
-              <td class="num muted">—</td>
-              <td class="num bold">R$540,38</td>
-              <td class="num">R$600,00</td>
-              <td class="num balance-cell pos">+R$59,62</td>
+              <td class="num" data-balance-cell="joao-pg">R$540,38</td>
+              <td class="num muted" data-balance-cell="joao-caipi">—</td>
+              <td class="num muted" data-balance-cell="joao-aqa">—</td>
+              <td class="num bold" data-balance-cell="joao-total">R$540,38</td>
+              <td class="num" data-balance-cell="joao-paid">R$600,00</td>
+              <td class="num balance-cell pos" data-balance-cell="joao-net">+R$59,62</td>
             </tr>
           </tbody>
         </table>
@@ -977,7 +813,7 @@
           <p class="unsimp-desc">Antes da otimização, cada pessoa devia diretamente a quem pagou — gerando 11 transações. O algoritmo reduziu para 3 PIX sem mudar nenhum centavo.</p>
           <div class="table-wrap">
             <table class="unsimp-table">
-              <tbody>
+              <tbody id="unsimp-tbody">
                 <tr><td><span class="chip ju">Ju</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip rafa">Rafa</span></td><td style="color:var(--ink-soft);font-size:12px;">compras PG</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$293,12</td></tr>
                 <tr><td><span class="chip higor">Higor</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip rafa">Rafa</span></td><td style="color:var(--ink-soft);font-size:12px;">compras PG</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$293,12</td></tr>
                 <tr><td><span class="chip joao">João</span></td><td class="arrow" style="padding:8px 8px;">→</td><td><span class="chip rafa">Rafa</span></td><td style="color:var(--ink-soft);font-size:12px;">compras PG</td><td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">R$293,12</td></tr>
