@@ -595,79 +595,28 @@
       line-height: 1.5;
     }
 
-    /* Transaction-level comments */
-    .tx-cmt-btn {
-      background: none;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      cursor: pointer;
-      padding: 1px 6px;
-      font-size: 11px;
-      color: var(--ink-soft);
-      font-family: "Plus Jakarta Sans", sans-serif;
-      font-weight: 500;
-      vertical-align: middle;
-      margin-left: 4px;
-      transition: all 0.15s;
-      white-space: nowrap;
-    }
-    .tx-cmt-btn:hover, .tx-cmt-btn.active {
-      background: var(--teal);
-      color: #fff;
-      border-color: var(--teal);
-    }
-    .tx-cmt-btn .cmt-count { color: var(--teal); font-weight: 700; }
-    .tx-cmt-btn.active .cmt-count { color: #fff; }
-    .tx-cmt-row { display: none; }
-    .tx-cmt-row.open { display: table-row; }
-    .tx-cmt-cell {
-      background: rgba(30, 94, 91, 0.05) !important;
-      padding: 14px 20px !important;
-      border-bottom: 2px solid var(--teal) !important;
-      border-top: none !important;
-    }
-    .tx-cmt-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-    .tx-cmt-item {
-      background: var(--bg-soft);
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 8px 12px;
-    }
-    .tx-cmt-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
-    .tx-cmt-time { font-size: 10px; color: var(--ink-soft); }
-    .tx-cmt-text { font-size: 13px; color: var(--ink); margin: 0; white-space: pre-wrap; word-break: break-word; }
-    .tx-no-cmt { font-size: 12px; color: var(--ink-soft); font-style: italic; margin: 0 0 10px; }
-    .tx-cmt-form { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
-    .tx-cmt-form input, .tx-cmt-form textarea {
-      background: var(--bg-soft);
-      border: 1px solid var(--line);
-      border-radius: 5px;
-      padding: 6px 10px;
-      font-family: "Plus Jakarta Sans", sans-serif;
-      font-size: 13px;
-      color: var(--ink);
-      resize: none;
-      transition: border-color 0.15s;
-    }
-    .tx-cmt-form input::placeholder, .tx-cmt-form textarea::placeholder { color: var(--ink-soft); opacity: 0.7; }
-    .tx-cmt-form input:focus, .tx-cmt-form textarea:focus { outline: none; border-color: var(--teal); }
-    .tx-cmt-form input { width: 90px; flex-shrink: 0; }
-    .tx-cmt-form textarea { flex: 1; min-width: 120px; }
-    .tx-cmt-send {
-      background: var(--teal);
-      color: #fff;
+    /* Transaction inline note */
+    .tx-note-input {
+      background: transparent;
       border: none;
-      border-radius: 5px;
-      padding: 6px 14px;
+      border-bottom: 1px dashed var(--line);
+      padding: 0 4px;
       font-family: "Plus Jakarta Sans", sans-serif;
-      font-weight: 700;
       font-size: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity 0.15s;
+      font-style: italic;
+      color: var(--teal);
+      width: 130px;
+      vertical-align: baseline;
+      margin-left: 8px;
+      transition: border-color 0.15s, background 0.15s;
     }
-    .tx-cmt-send:hover { opacity: 0.85; }
-    .tx-cmt-send:disabled { opacity: 0.45; cursor: not-allowed; }
+    .tx-note-input::placeholder { color: var(--line); }
+    .tx-note-input:focus {
+      outline: none;
+      border-bottom-color: var(--teal);
+      background: rgba(30,94,91,0.05);
+    }
+    .tx-note-input.saving { opacity: 0.4; }
 
     /* Unsimplified debts */
     .unsimplified {
@@ -804,32 +753,19 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-date">18/04</td><td class="td-desc"><span id="note-rafa-nossocanto"></span>Mp Nossocanto</td><td class="td-amount">R$231,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_01_mp_nossocanto.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-nossocanto" onclick="toggleTx('rafa-nossocanto')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-nossocanto"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-nossocanto"></div></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc"><span id="note-rafa-oxxo"></span>Oxxo Xixova</td><td class="td-amount">R$17,29 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_02_oxxo_xixova.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-oxxo" onclick="toggleTx('rafa-oxxo')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-oxxo"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-oxxo"></div></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc"><span id="note-rafa-carrefour"></span>Carrefour</td><td class="td-amount">R$370,05 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_04_carrefour.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-carrefour" onclick="toggleTx('rafa-carrefour')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-carrefour"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-carrefour"></div></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc"><span id="note-rafa-pao-15"></span>Pão de Açúcar</td><td class="td-amount">R$15,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_05_pao_de_acucar.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-pao-15" onclick="toggleTx('rafa-pao-15')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-pao-15"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-pao-15"></div></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc"><span id="note-rafa-bk"></span>Burger King</td><td class="td-amount">R$77,70 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_02_burger_king.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-bk" onclick="toggleTx('rafa-bk')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-bk"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-bk"></div></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc"><span id="note-rafa-uber-a"></span>Uber</td><td class="td-amount">R$34,97 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_03_uber_a.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-uber-a" onclick="toggleTx('rafa-uber-a')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-uber-a"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-uber-a"></div></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc"><span id="note-rafa-uber-b"></span>Uber</td><td class="td-amount">R$35,98 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_04_uber_b.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-uber-b" onclick="toggleTx('rafa-uber-b')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-uber-b"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-uber-b"></div></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc"><span id="note-rafa-tenda"></span>Tenda Atacado</td><td class="td-amount">R$19,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_05_tenda_atacado.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-tenda" onclick="toggleTx('rafa-tenda')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-tenda"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-tenda"></div></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc"><span id="note-rafa-pao-788"></span>Pão de Açúcar</td><td class="td-amount">R$7,88 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_06_pao_de_acucar_a.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-pao-788" onclick="toggleTx('rafa-pao-788')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-pao-788"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-pao-788"></div></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc"><span id="note-rafa-pao-8175"></span>Pão de Açúcar <span style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-left:4px;">cervejas, último dia</span></td><td class="td-amount">R$81,75 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_08_pao_de_acucar_c.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-pao-8175" onclick="toggleTx('rafa-pao-8175')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-pao-8175"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-pao-8175"></div></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc"><span id="note-rafa-extra"></span>Mercado Extra</td><td class="td-amount">R$108,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_09_mercado_extra.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-extra" onclick="toggleTx('rafa-extra')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-extra"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-extra"></div></td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc"><span id="note-rafa-kiosk"></span>Kiosk — porção (÷4)</td><td class="td-amount">R$180,00 <button class="comp-btn" onclick="openLightbox('comprovantes/kiosk_porcao.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-kiosk" onclick="toggleTx('rafa-kiosk')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-kiosk"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-kiosk"></div></td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc"><span id="note-rafa-pao-024"></span>Pão de Açúcar</td><td class="td-amount">R$0,24 <button class="comp-btn" onclick="openLightbox('comprovantes/21apr_01_pao_de_acucar.png')">comprovante</button> <button class="tx-cmt-btn" data-tx="rafa-pao-024" onclick="toggleTx('rafa-pao-024')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-rafa-pao-024"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-rafa-pao-024"></div></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Mp Nossocanto <input class="tx-note-input" data-tx="rafa-nossocanto" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$231,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_01_mp_nossocanto.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Oxxo Xixova <input class="tx-note-input" data-tx="rafa-oxxo" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$17,29 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_02_oxxo_xixova.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Carrefour <input class="tx-note-input" data-tx="rafa-carrefour" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$370,05 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_04_carrefour.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Pão de Açúcar <input class="tx-note-input" data-tx="rafa-pao-15" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$15,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_05_pao_de_acucar.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Burger King <input class="tx-note-input" data-tx="rafa-bk" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$77,70 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_02_burger_king.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="rafa-uber-a" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$34,97 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_03_uber_a.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="rafa-uber-b" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$35,98 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_04_uber_b.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Tenda Atacado <input class="tx-note-input" data-tx="rafa-tenda" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$19,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_05_tenda_atacado.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar <input class="tx-note-input" data-tx="rafa-pao-788" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$7,88 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_06_pao_de_acucar_a.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar <span style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-left:4px;">cervejas, último dia</span> <input class="tx-note-input" data-tx="rafa-pao-8175" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$81,75 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_08_pao_de_acucar_c.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Mercado Extra <input class="tx-note-input" data-tx="rafa-extra" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$108,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_09_mercado_extra.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Kiosk — porção (÷4) <input class="tx-note-input" data-tx="rafa-kiosk" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$180,00 <button class="comp-btn" onclick="openLightbox('comprovantes/kiosk_porcao.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar <input class="tx-note-input" data-tx="rafa-pao-024" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$0,24 <button class="comp-btn" onclick="openLightbox('comprovantes/21apr_01_pao_de_acucar.png')">comprovante</button></td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -855,12 +791,9 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-desc"><span id="note-joao-comb"></span>Combustível</td><td class="td-amount">R$350,00 <button class="comp-btn" onclick="openLightbox('comprovantes/joao_combustivel.jpg')">comprovante</button> <button class="tx-cmt-btn" data-tx="joao-comb" onclick="toggleTx('joao-comb')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-joao-comb"><td colspan="2" class="tx-cmt-cell"><div id="tx-panel-joao-comb"></div></td></tr>
-              <tr><td class="td-desc"><span id="note-joao-pedagio"></span>Pedágio</td><td class="td-amount">R$200,00 <button class="tx-cmt-btn" data-tx="joao-pedagio" onclick="toggleTx('joao-pedagio')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-joao-pedagio"><td colspan="2" class="tx-cmt-cell"><div id="tx-panel-joao-pedagio"></div></td></tr>
-              <tr><td class="td-desc"><span id="note-joao-reab"></span>Reabastecimento almoço</td><td class="td-amount">R$50,00 <button class="tx-cmt-btn" data-tx="joao-reab" onclick="toggleTx('joao-reab')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-joao-reab"><td colspan="2" class="tx-cmt-cell"><div id="tx-panel-joao-reab"></div></td></tr>
+              <tr><td class="td-desc">Combustível <input class="tx-note-input" data-tx="joao-comb" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$350,00 <button class="comp-btn" onclick="openLightbox('comprovantes/joao_combustivel.jpg')">comprovante</button></td></tr>
+              <tr><td class="td-desc">Pedágio <input class="tx-note-input" data-tx="joao-pedagio" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$200,00</td></tr>
+              <tr><td class="td-desc">Reabastecimento almoço <input class="tx-note-input" data-tx="joao-reab" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$50,00</td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -886,10 +819,8 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-date">18/04</td><td class="td-desc"><span id="note-ju-uber-a"></span>Uber</td><td class="td-amount">R$189,99 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button> <button class="tx-cmt-btn" data-tx="ju-uber-a" onclick="toggleTx('ju-uber-a')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-ju-uber-a"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-ju-uber-a"></div></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc"><span id="note-ju-uber-b"></span>Uber</td><td class="td-amount">R$199,06 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button> <button class="tx-cmt-btn" data-tx="ju-uber-b" onclick="toggleTx('ju-uber-b')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-ju-uber-b"><td colspan="3" class="tx-cmt-cell"><div id="tx-panel-ju-uber-b"></div></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="ju-uber-a" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$189,99 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="ju-uber-b" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$199,06 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -929,10 +860,8 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-desc"><span id="note-ju-caipi"></span>3 caipirinhas (R$40 cada)</td><td class="td-amount">R$120,00 <button class="tx-cmt-btn" data-tx="ju-caipi" onclick="toggleTx('ju-caipi')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-ju-caipi"><td colspan="2" class="tx-cmt-cell"><div id="tx-panel-ju-caipi"></div></td></tr>
-              <tr><td class="td-desc"><span id="note-ju-pastel"></span>Pastel</td><td class="td-amount">R$25,00 <button class="tx-cmt-btn" data-tx="ju-pastel" onclick="toggleTx('ju-pastel')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-ju-pastel"><td colspan="2" class="tx-cmt-cell"><div id="tx-panel-ju-pastel"></div></td></tr>
+              <tr><td class="td-desc">3 caipirinhas (R$40 cada) <input class="tx-note-input" data-tx="ju-caipi" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$120,00</td></tr>
+              <tr><td class="td-desc">Pastel <input class="tx-note-input" data-tx="ju-pastel" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$25,00</td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -967,10 +896,8 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-desc"><span id="note-higor-pedagio"></span>Pedágio</td><td class="td-amount">R$70,00 <button class="tx-cmt-btn" data-tx="higor-pedagio" onclick="toggleTx('higor-pedagio')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-higor-pedagio"><td colspan="2" class="tx-cmt-cell"><div id="tx-panel-higor-pedagio"></div></td></tr>
-              <tr><td class="td-desc"><span id="note-higor-comb"></span>Combustível</td><td class="td-amount">R$50,00 <button class="tx-cmt-btn" data-tx="higor-comb" onclick="toggleTx('higor-comb')">💬</button></td></tr>
-              <tr class="tx-cmt-row" id="tx-row-higor-comb"><td colspan="2" class="tx-cmt-cell"><div id="tx-panel-higor-comb"></div></td></tr>
+              <tr><td class="td-desc">Pedágio <input class="tx-note-input" data-tx="higor-pedagio" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$70,00</td></tr>
+              <tr><td class="td-desc">Combustível <input class="tx-note-input" data-tx="higor-comb" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$50,00</td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -1127,9 +1054,8 @@
     const JSONBIN_BIN_ID = '69f0d0bbaaba8821974a07dd';
     const API_BASE       = 'https://api.jsonbin.io/v3/b';
 
-    // Cached store: { comments: [], txComments: {}, txNotes: {} }
+    // store: { comments: [], txNotes: {} }
     let store = null;
-    let activeTx = null;
 
     const configured = () =>
       JSONBIN_KEY !== 'COLE_SUA_MASTER_KEY_AQUI' &&
@@ -1161,9 +1087,8 @@
       if (!r.ok) throw new Error('load failed');
       const data = await r.json();
       store = {
-        comments:   data.record.comments   || [],
-        txComments: data.record.txComments || {},
-        txNotes:    data.record.txNotes    || {}
+        comments: data.record.comments || [],
+        txNotes:  data.record.txNotes  || {}
       };
       return store;
     }
@@ -1177,128 +1102,29 @@
       if (!r.ok) throw new Error('save failed');
     }
 
-    // ── Inline notes (per-transaction) ───────────────────────────
-    function renderAllNotes() {
-      if (!store) return;
-      Object.entries(store.txNotes).forEach(([txId, text]) => {
-        const el = document.getElementById('note-' + txId);
-        if (el && text) {
-          el.innerHTML = `<span style="display:block;font-size:11px;color:var(--teal);font-style:italic;margin-bottom:2px;">📌 ${escapeHtml(text)}</span>`;
-        }
+    // ── Transaction inline notes ──────────────────────────────────
+    function populateNoteInputs() {
+      document.querySelectorAll('.tx-note-input').forEach(input => {
+        const val = store.txNotes[input.dataset.tx] || '';
+        input.value = val;
       });
     }
 
-    // ── TX comment panels ─────────────────────────────────────────
-    function updateCmtCounts() {
-      if (!store) return;
-      document.querySelectorAll('.tx-cmt-btn').forEach(btn => {
-        const txId = btn.dataset.tx;
-        const n = (store.txComments[txId] || []).length;
-        btn.innerHTML = n > 0 ? `💬 <span class="cmt-count">${n}</span>` : '💬';
-      });
-    }
-
-    function toggleTx(txId) {
-      const row = document.getElementById('tx-row-' + txId);
-      const btn = document.querySelector(`.tx-cmt-btn[data-tx="${txId}"]`);
-      const isOpen = row.classList.contains('open');
-
-      // close previous
-      if (activeTx && activeTx !== txId) {
-        const pr = document.getElementById('tx-row-' + activeTx);
-        const pb = document.querySelector(`.tx-cmt-btn[data-tx="${activeTx}"]`);
-        if (pr) pr.classList.remove('open');
-        if (pb) pb.classList.remove('active');
-      }
-
-      if (isOpen) {
-        row.classList.remove('open');
-        btn.classList.remove('active');
-        activeTx = null;
-      } else {
-        row.classList.add('open');
-        btn.classList.add('active');
-        activeTx = txId;
-        renderTxPanel(txId);
-      }
-    }
-
-    function renderTxPanel(txId) {
-      const panel = document.getElementById('tx-panel-' + txId);
-      if (!panel) return;
-      const comments = store?.txComments?.[txId] || [];
-      const note     = store?.txNotes?.[txId] || '';
-
-      let html = '';
-
-      // Note field
-      html += `<div style="margin-bottom:12px;">
-        <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">📌 Nota da transação</div>
-        <form class="tx-cmt-form" onsubmit="saveTxNote(event,'${txId}')">
-          <textarea rows="1" placeholder="Adicione uma nota explicativa…" maxlength="200" style="flex:1;">${escapeHtml(note)}</textarea>
-          <button type="submit" class="tx-cmt-send" style="background:var(--gold);color:var(--ink);">Salvar</button>
-        </form>
-      </div>`;
-
-      // Comments
-      html += `<div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:8px;">💬 Comentários</div>`;
-      if (comments.length) {
-        html += '<div class="tx-cmt-list">';
-        comments.forEach(c => {
-          const cls = nameToChip(c.name);
-          html += `<div class="tx-cmt-item">
-            <div class="tx-cmt-meta"><span class="chip ${cls}">${escapeHtml(c.name)}</span><span class="tx-cmt-time">${fmtDate(c.ts)}</span></div>
-            <p class="tx-cmt-text">${escapeHtml(c.text)}</p>
-          </div>`;
+    function initNoteInputs() {
+      document.querySelectorAll('.tx-note-input').forEach(input => {
+        let lastSaved = input.value;
+        input.addEventListener('blur', async () => {
+          const val = input.value.trim();
+          if (val === lastSaved) return;
+          input.classList.add('saving');
+          try {
+            store.txNotes[input.dataset.tx] = val;
+            await persist();
+            lastSaved = val;
+          } catch { input.value = lastSaved; }
+          input.classList.remove('saving');
         });
-        html += '</div>';
-      } else {
-        html += '<p class="tx-no-cmt">Sem comentários ainda.</p>';
-      }
-      html += `<form class="tx-cmt-form" onsubmit="submitTxCmt(event,'${txId}')">
-        <input type="text" placeholder="Nome" maxlength="40" autocomplete="off" required />
-        <textarea rows="1" placeholder="Comentário…" maxlength="300" required></textarea>
-        <button type="submit" class="tx-cmt-send">Enviar</button>
-      </form>`;
-
-      panel.innerHTML = html;
-    }
-
-    async function saveTxNote(e, txId) {
-      e.preventDefault();
-      const textarea = e.target.querySelector('textarea');
-      const btn = e.target.querySelector('button');
-      const text = textarea.value.trim();
-      btn.textContent = '…'; btn.disabled = true;
-      try {
-        store.txNotes[txId] = text;
-        await persist();
-        renderAllNotes();
-        renderTxPanel(txId);
-      } catch { btn.textContent = 'Erro'; }
-      btn.textContent = 'Salvar'; btn.disabled = false;
-    }
-
-    async function submitTxCmt(e, txId) {
-      e.preventDefault();
-      const [nameEl, textEl] = e.target.querySelectorAll('input, textarea');
-      const btn = e.target.querySelector('button');
-      const name = nameEl.value.trim(), text = textEl.value.trim();
-      if (!name || !text) return;
-      btn.textContent = '…'; btn.disabled = true;
-      try {
-        if (!store.txComments[txId]) store.txComments[txId] = [];
-        store.txComments[txId].push({ name, text, ts: Date.now() });
-        await persist();
-        updateCmtCounts();
-        renderTxPanel(txId);
-        nameEl.value = ''; textEl.value = '';
-      } catch {
-        btn.textContent = 'Erro';
-        setTimeout(() => { btn.textContent = 'Enviar'; btn.disabled = false; }, 2000);
-        return;
-      }
-      btn.textContent = 'Enviar'; btn.disabled = false;
+      });
     }
 
     // ── Global comments ───────────────────────────────────────────
@@ -1331,8 +1157,8 @@
       try {
         await loadAll();
         renderGlobalComments();
-        updateCmtCounts();
-        renderAllNotes();
+        populateNoteInputs();
+        initNoteInputs();
       } catch {
         document.getElementById('comment-list').innerHTML =
           '<p class="no-comments">Erro ao carregar comentários.</p>';
