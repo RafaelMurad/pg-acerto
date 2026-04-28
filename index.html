@@ -949,6 +949,141 @@
       initEditableDescs();
     }
 
+    function consolidateDebts(net) {
+      const eps = 0.005;
+      const credits = PEOPLE
+        .filter(p => net[p] > eps)
+        .map(p => ({ who: p, amount: net[p] }))
+        .sort((a, b) => b.amount - a.amount);
+      const debts = PEOPLE
+        .filter(p => net[p] < -eps)
+        .map(p => ({ who: p, amount: -net[p] }))
+        .sort((a, b) => b.amount - a.amount);
+
+      const transfers = [];
+      let ci = 0, di = 0;
+      while (ci < credits.length && di < debts.length) {
+        const c = credits[ci], d = debts[di];
+        const pay = Math.min(c.amount, d.amount);
+        if (pay > eps) transfers.push({ from: d.who, to: c.who, amount: pay });
+        c.amount -= pay;
+        d.amount -= pay;
+        if (c.amount < eps) ci++;
+        if (d.amount < eps) di++;
+      }
+      return transfers;
+    }
+
+    function recalculate() {
+      // 1. Per-payer totals
+      const payerTotals = {};
+      PEOPLE.forEach(p => payerTotals[p] = 0);
+      store.transactions.forEach(tx => {
+        payerTotals[tx.paidBy] = (payerTotals[tx.paidBy] || 0) + tx.amount;
+      });
+
+      // 2. Per-person owed, per bucket
+      const owed = {};
+      PEOPLE.forEach(p => { owed[p] = {}; BUCKETS.forEach(b => owed[p][b.id] = 0); });
+      store.transactions.forEach(tx => {
+        const share = tx.amount / tx.splitAmong.length;
+        tx.splitAmong.forEach(p => { owed[p][tx.bucket] = (owed[p][tx.bucket] || 0) + share; });
+      });
+
+      // 3. Total owed and net balance
+      const totalOwed = {}, net = {};
+      PEOPLE.forEach(p => {
+        totalOwed[p] = BUCKETS.reduce((s, b) => s + (owed[p][b.id] || 0), 0);
+        net[p] = payerTotals[p] - totalOwed[p];
+      });
+
+      // 4. Debt consolidation
+      const transfers = consolidateDebts(net);
+
+      // 5. Update balance table cells
+      PEOPLE.forEach(p => {
+        BUCKETS.forEach(b => {
+          const cell = document.querySelector(`[data-balance-cell="${p}-${b.id}"]`);
+          if (!cell) return;
+          const val = owed[p][b.id];
+          if (val > 0.005) {
+            cell.textContent = fmt(val);
+            cell.classList.remove('muted');
+          } else {
+            cell.textContent = '—';
+            cell.classList.add('muted');
+          }
+        });
+        const totalCell = document.querySelector(`[data-balance-cell="${p}-total"]`);
+        const paidCell  = document.querySelector(`[data-balance-cell="${p}-paid"]`);
+        const netCell   = document.querySelector(`[data-balance-cell="${p}-net"]`);
+        if (totalCell) totalCell.textContent = fmt(totalOwed[p]);
+        if (paidCell)  paidCell.textContent  = fmt(payerTotals[p]);
+        if (netCell) {
+          const n = net[p];
+          netCell.textContent = (n >= 0 ? '+' : '−') + fmt(Math.abs(n));
+          netCell.className = 'num balance-cell ' + (n >= 0 ? 'pos' : 'neg');
+        }
+      });
+
+      // 6. Bucket PG total
+      const pgTotal = store.transactions
+        .filter(tx => tx.bucket === 'pg')
+        .reduce((s, tx) => s + tx.amount, 0);
+      const pgPerPerson = owed['rafa']['pg'];
+      const pgTotalEl = document.getElementById('bucket-total-pg');
+      if (pgTotalEl) pgTotalEl.innerHTML =
+        `${fmt(pgTotal)} — ${fmt(pgPerPerson)} <span class="each">cada</span>`;
+
+      // 7. Hero PIX
+      const headline = document.getElementById('pix-headline');
+      const pixRows  = document.getElementById('pix-rows');
+      const countWord = ['Zero','Um','Dois','Três','Quatro','Cinco'][transfers.length] || transfers.length;
+      if (headline) headline.textContent = `${countWord} PIX e a gente fecha tudo.`;
+      if (pixRows) pixRows.innerHTML = transfers.map(t => `
+        <div class="pix-row">
+          <div class="pix-from">
+            <span class="chip lg ${t.from}">${PEOPLE_LABELS[t.from]}</span>
+            <span class="arrow">→</span>
+            <span class="chip lg ${t.to}">${PEOPLE_LABELS[t.to]}</span>
+          </div>
+          <div class="pix-amount">${fmt(t.amount)}</div>
+        </div>`).join('');
+
+      // 8. Unsimplified table
+      const unsimpTbody = document.getElementById('unsimp-tbody');
+      if (unsimpTbody) {
+        const directDebts = [];
+        BUCKETS.forEach(b => {
+          const payersInBucket = [...new Set(store.transactions.filter(tx => tx.bucket === b.id).map(tx => tx.paidBy))];
+          payersInBucket.forEach(payer => {
+            PEOPLE.forEach(person => {
+              if (person === payer) return;
+              const amt = store.transactions
+                .filter(tx => tx.bucket === b.id && tx.paidBy === payer && tx.splitAmong.includes(person))
+                .reduce((s, tx) => s + tx.amount / tx.splitAmong.length, 0);
+              if (amt > 0.005) directDebts.push({ from: person, to: payer, amount: amt, label: b.id });
+            });
+          });
+        });
+        const bucketLabels = { pg:'compras PG', caipi:'caipi', aqa:'AQA' };
+        unsimpTbody.innerHTML = directDebts.map(d => `
+          <tr>
+            <td><span class="chip ${d.from}">${PEOPLE_LABELS[d.from]}</span></td>
+            <td class="arrow" style="padding:8px 8px;">→</td>
+            <td><span class="chip ${d.to}">${PEOPLE_LABELS[d.to]}</span></td>
+            <td style="color:var(--ink-soft);font-size:12px;">${bucketLabels[d.label] || d.label}</td>
+            <td class="td-amount" style="padding:8px 16px;font-variant-numeric:tabular-nums;">${fmt(d.amount)}</td>
+          </tr>`).join('');
+        const footer = document.querySelector('.unsimp-footer');
+        if (footer) {
+          footer.textContent = `${transfers.length} PIX em vez de ${directDebts.length} — economia de ${directDebts.length - transfers.length} transações 🎉`;
+        }
+        const label = document.querySelector('.unsimp-label');
+        if (label) label.textContent = `E sem simplificação? Seriam ${directDebts.length} PIX diretos ▾`;
+      }
+    }
+
     // ── JSONBin ───────────────────────────────────────────────────
     const JSONBIN_KEY    = '$2a$10$Ta.YdXUKu1Af6js5lZ9BnesxxJA1iY1QH.1dnl/uubzUHdr9ogKbK';
     const JSONBIN_BIN_ID = '69f0d0bbaaba8821974a07dd';
@@ -1118,6 +1253,7 @@
       try {
         await loadAll();
         renderBuckets();
+        recalculate();
         renderGlobalComments();
       } catch {
         document.getElementById('comment-list').innerHTML =
