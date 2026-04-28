@@ -289,16 +289,25 @@
       padding: 12px 20px;
       background: var(--bg);
       border-top: 1px solid var(--line);
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .per-person {
+    .debt-list {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .debt-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .debt-amount {
       font-family: "Plus Jakarta Sans", sans-serif;
       font-weight: 700;
-      font-size: 18px;
+      font-size: 15px;
     }
-    .per-person.coral { color: var(--coral); }
-    .per-person.gold { color: var(--gold); }
-    .per-person.pink { color: var(--pink); }
-    .per-person.teal { color: var(--teal); }
 
     .bucket-total {
       margin-top: 20px;
@@ -1117,11 +1126,26 @@
           });
 
         container.innerHTML = PEOPLE.filter(p => byPayer[p]).map(payer => {
-          const txs = byPayer[payer];
-          const color      = PEOPLE_COLORS[payer] || 'coral';
-          const label      = PEOPLE_LABELS[payer] || payer;
-          const total      = txs.reduce((s, tx) => s + tx.amount, 0);
-          const perPerson  = txs.reduce((s, tx) => s + tx.amount / tx.splitAmong.length, 0);
+          const txs   = byPayer[payer];
+          const color = PEOPLE_COLORS[payer] || 'coral';
+          const label = PEOPLE_LABELS[payer] || payer;
+          const total = txs.reduce((s, tx) => s + tx.amount, 0);
+
+          // Per-debtor amounts: how much each non-payer owes this payer
+          const personOwed = {};
+          txs.forEach(tx => {
+            const share = tx.amount / tx.splitAmong.length;
+            tx.splitAmong.forEach(p => {
+              if (p !== payer) personOwed[p] = (personOwed[p] || 0) + share;
+            });
+          });
+          const debtors = PEOPLE.filter(p => p !== payer && personOwed[p] > 0.005);
+          const footerItems = debtors.map(p =>
+            `<span class="debt-item">
+              <span class="chip ${p}">${PEOPLE_LABELS[p]}</span>
+              <span class="debt-amount">${fmt(personOwed[p])}</span>
+            </span>`
+          ).join('');
 
           const rows = txs.map(tx => {
             const dateCell = tx.date
@@ -1153,8 +1177,8 @@
             </div>
             <table><tbody id="tbody-${payer}-${bucket.id}">${rows}</tbody></table>
             <div class="card-foot">
-              <span class="label">Por pessoa</span>
-              <span class="per-person ${color}" id="per-person-${payer}-${bucket.id}">${fmt(perPerson)} cada</span>
+              <span class="label">Cada um deve</span>
+              <div class="debt-list">${footerItems}</div>
             </div>
           </div>`;
         }).join('');
