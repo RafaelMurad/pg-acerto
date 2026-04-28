@@ -738,6 +738,10 @@
   width: 100%;
   max-width: 440px;
   box-shadow: 0 12px 40px rgba(42,31,20,0.2);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .modal h3 {
   margin: 0 0 20px;
@@ -1370,11 +1374,34 @@
       store = {
         comments:     data.record.comments     || [],
         txNotes:      data.record.txNotes      || {},
-        transactions
+        transactions,
+        migrations:   data.record.migrations   || []
       };
 
-      // If we just seeded, persist immediately so future loads skip seeding
-      if (!data.record.transactions || data.record.transactions.length === 0) {
+      // One-time data migrations — each runs exactly once, tracked by id
+      const MIGRATIONS = [
+        {
+          id: 'caipi-28apr-2026',
+          run() {
+            store.transactions.push(
+              { id: 'caipi28apr-drinks',  date: '28/04', desc: '4 caipirinhas',      amount: 240, bucket: 'caipi', paidBy: 'rafa', splitAmong: ['rafa','higor','ju'], comprovante: null },
+              { id: 'caipi28apr-entrega', date: '28/04', desc: 'Entrega caipirinhas', amount: 20, bucket: 'caipi', paidBy: 'rafa', splitAmong: ['rafa','higor','ju'], comprovante: null }
+            );
+          }
+        }
+      ];
+
+      let migrated = false;
+      for (const m of MIGRATIONS) {
+        if (!store.migrations.includes(m.id)) {
+          m.run();
+          store.migrations.push(m.id);
+          migrated = true;
+        }
+      }
+
+      // Persist if first seed or any migration ran
+      if (!data.record.transactions || data.record.transactions.length === 0 || migrated) {
         await persist();
       }
 
