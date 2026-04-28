@@ -274,6 +274,14 @@
       font-variant-numeric: tabular-nums;
       font-weight: 500;
       white-space: nowrap;
+      width: 1px; /* shrink to content */
+    }
+    @media (max-width: 480px) {
+      table td { padding: 10px 14px; }
+      .td-date { width: 52px; font-size: 12px; }
+      .td-desc { font-size: 13px; }
+      .td-amount { font-size: 13px; }
+      .comp-btn { display: block; margin: 4px 0 0 auto; }
     }
     .card-foot {
       display: flex;
@@ -596,27 +604,45 @@
     }
 
     /* Transaction inline note */
-    .tx-note-input {
-      background: transparent;
-      border: none;
-      border-bottom: 1px dashed var(--line);
-      padding: 0 4px;
+    .note-icon {
+      font-size: 11px;
+      opacity: 0;
+      cursor: pointer;
+      margin-left: 7px;
+      color: var(--ink-soft);
+      transition: opacity 0.15s;
+      user-select: none;
+      vertical-align: middle;
+    }
+    tr:hover .note-icon { opacity: 0.45; }
+    tr:hover .note-icon:hover { opacity: 1; color: var(--teal); }
+    /* On touch devices always show the icon */
+    @media (hover: none) { .note-icon { opacity: 0.4; } }
+    .note-saved {
+      font-size: 11px;
+      color: var(--teal);
+      font-style: italic;
+      margin-left: 8px;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    .note-saved:hover { text-decoration: underline; }
+    .note-edit {
+      display: inline-block;
+      background: rgba(30,94,91,0.06);
+      border: 1px solid rgba(30,94,91,0.35);
+      border-radius: 4px;
+      padding: 2px 8px;
       font-family: "Plus Jakarta Sans", sans-serif;
       font-size: 12px;
       font-style: italic;
       color: var(--teal);
-      width: 130px;
-      vertical-align: baseline;
       margin-left: 8px;
-      transition: border-color 0.15s, background 0.15s;
+      min-width: 110px;
+      max-width: 200px;
+      vertical-align: middle;
     }
-    .tx-note-input::placeholder { color: var(--line); }
-    .tx-note-input:focus {
-      outline: none;
-      border-bottom-color: var(--teal);
-      background: rgba(30,94,91,0.05);
-    }
-    .tx-note-input.saving { opacity: 0.4; }
+    .note-edit:focus { outline: none; border-color: var(--teal); }
 
     /* Unsimplified debts */
     .unsimplified {
@@ -753,19 +779,19 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-date">18/04</td><td class="td-desc">Mp Nossocanto <input class="tx-note-input" data-tx="rafa-nossocanto" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$231,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_01_mp_nossocanto.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc">Oxxo Xixova <input class="tx-note-input" data-tx="rafa-oxxo" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$17,29 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_02_oxxo_xixova.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc">Carrefour <input class="tx-note-input" data-tx="rafa-carrefour" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$370,05 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_04_carrefour.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc">Pão de Açúcar <input class="tx-note-input" data-tx="rafa-pao-15" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$15,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_05_pao_de_acucar.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Burger King <input class="tx-note-input" data-tx="rafa-bk" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$77,70 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_02_burger_king.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="rafa-uber-a" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$34,97 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_03_uber_a.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="rafa-uber-b" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$35,98 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_04_uber_b.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Tenda Atacado <input class="tx-note-input" data-tx="rafa-tenda" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$19,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_05_tenda_atacado.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar <input class="tx-note-input" data-tx="rafa-pao-788" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$7,88 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_06_pao_de_acucar_a.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar <span style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-left:4px;">cervejas, último dia</span> <input class="tx-note-input" data-tx="rafa-pao-8175" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$81,75 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_08_pao_de_acucar_c.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Mercado Extra <input class="tx-note-input" data-tx="rafa-extra" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$108,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_09_mercado_extra.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Kiosk — porção (÷4) <input class="tx-note-input" data-tx="rafa-kiosk" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$180,00 <button class="comp-btn" onclick="openLightbox('comprovantes/kiosk_porcao.png')">comprovante</button></td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar <input class="tx-note-input" data-tx="rafa-pao-024" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$0,24 <button class="comp-btn" onclick="openLightbox('comprovantes/21apr_01_pao_de_acucar.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Mp Nossocanto <span class="note-area" data-tx="rafa-nossocanto"></span></td><td class="td-amount">R$231,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_01_mp_nossocanto.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Oxxo Xixova <span class="note-area" data-tx="rafa-oxxo"></span></td><td class="td-amount">R$17,29 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_02_oxxo_xixova.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Carrefour <span class="note-area" data-tx="rafa-carrefour"></span></td><td class="td-amount">R$370,05 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_04_carrefour.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Pão de Açúcar <span class="note-area" data-tx="rafa-pao-15"></span></td><td class="td-amount">R$15,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_05_pao_de_acucar.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Burger King <span class="note-area" data-tx="rafa-bk"></span></td><td class="td-amount">R$77,70 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_02_burger_king.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Uber <span class="note-area" data-tx="rafa-uber-a"></span></td><td class="td-amount">R$34,97 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_03_uber_a.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Uber <span class="note-area" data-tx="rafa-uber-b"></span></td><td class="td-amount">R$35,98 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_04_uber_b.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Tenda Atacado <span class="note-area" data-tx="rafa-tenda"></span></td><td class="td-amount">R$19,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_05_tenda_atacado.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar <span class="note-area" data-tx="rafa-pao-788"></span></td><td class="td-amount">R$7,88 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_06_pao_de_acucar_a.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar <span style="font-size:11px;color:var(--ink-soft);font-style:italic;margin-left:4px;">cervejas, último dia</span> <span class="note-area" data-tx="rafa-pao-8175"></span></td><td class="td-amount">R$81,75 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_08_pao_de_acucar_c.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Mercado Extra <span class="note-area" data-tx="rafa-extra"></span></td><td class="td-amount">R$108,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_09_mercado_extra.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Kiosk — porção (÷4) <span class="note-area" data-tx="rafa-kiosk"></span></td><td class="td-amount">R$180,00 <button class="comp-btn" onclick="openLightbox('comprovantes/kiosk_porcao.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar <span class="note-area" data-tx="rafa-pao-024"></span></td><td class="td-amount">R$0,24 <button class="comp-btn" onclick="openLightbox('comprovantes/21apr_01_pao_de_acucar.png')">comprovante</button></td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -791,9 +817,9 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-desc">Combustível <input class="tx-note-input" data-tx="joao-comb" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$350,00 <button class="comp-btn" onclick="openLightbox('comprovantes/joao_combustivel.jpg')">comprovante</button></td></tr>
-              <tr><td class="td-desc">Pedágio <input class="tx-note-input" data-tx="joao-pedagio" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$200,00</td></tr>
-              <tr><td class="td-desc">Reabastecimento almoço <input class="tx-note-input" data-tx="joao-reab" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$50,00</td></tr>
+              <tr><td class="td-desc">Combustível <span class="note-area" data-tx="joao-comb"></span></td><td class="td-amount">R$350,00 <button class="comp-btn" onclick="openLightbox('comprovantes/joao_combustivel.jpg')">comprovante</button></td></tr>
+              <tr><td class="td-desc">Pedágio <span class="note-area" data-tx="joao-pedagio"></span></td><td class="td-amount">R$200,00</td></tr>
+              <tr><td class="td-desc">Reabastecimento almoço <span class="note-area" data-tx="joao-reab"></span></td><td class="td-amount">R$50,00</td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -819,8 +845,8 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-date">18/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="ju-uber-a" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$189,99 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
-              <tr><td class="td-date">18/04</td><td class="td-desc">Uber <input class="tx-note-input" data-tx="ju-uber-b" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$199,06 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Uber <span class="note-area" data-tx="ju-uber-a"></span></td><td class="td-amount">R$189,99 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
+              <tr><td class="td-date">18/04</td><td class="td-desc">Uber <span class="note-area" data-tx="ju-uber-b"></span></td><td class="td-amount">R$199,06 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -860,8 +886,8 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-desc">3 caipirinhas (R$40 cada) <input class="tx-note-input" data-tx="ju-caipi" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$120,00</td></tr>
-              <tr><td class="td-desc">Pastel <input class="tx-note-input" data-tx="ju-pastel" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$25,00</td></tr>
+              <tr><td class="td-desc">3 caipirinhas (R$40 cada) <span class="note-area" data-tx="ju-caipi"></span></td><td class="td-amount">R$120,00</td></tr>
+              <tr><td class="td-desc">Pastel <span class="note-area" data-tx="ju-pastel"></span></td><td class="td-amount">R$25,00</td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -896,8 +922,8 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-desc">Pedágio <input class="tx-note-input" data-tx="higor-pedagio" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$70,00</td></tr>
-              <tr><td class="td-desc">Combustível <input class="tx-note-input" data-tx="higor-comb" placeholder="nota…" maxlength="100"></td><td class="td-amount">R$50,00</td></tr>
+              <tr><td class="td-desc">Pedágio <span class="note-area" data-tx="higor-pedagio"></span></td><td class="td-amount">R$70,00</td></tr>
+              <tr><td class="td-desc">Combustível <span class="note-area" data-tx="higor-comb"></span></td><td class="td-amount">R$50,00</td></tr>
             </tbody>
           </table>
           <div class="card-foot">
@@ -1103,27 +1129,38 @@
     }
 
     // ── Transaction inline notes ──────────────────────────────────
-    function populateNoteInputs() {
-      document.querySelectorAll('.tx-note-input').forEach(input => {
-        const val = store.txNotes[input.dataset.tx] || '';
-        input.value = val;
-      });
+    function renderNoteArea(area, note, editMode) {
+      const txId = area.dataset.tx;
+      if (editMode) {
+        area.innerHTML = `<input class="note-edit" type="text" placeholder="nota…" maxlength="100">`;
+        const input = area.querySelector('input');
+        input.value = note;
+        input.focus();
+        input.select();
+        const save = async () => {
+          const val = input.value.trim();
+          store.txNotes[txId] = val;
+          try { await persist(); } catch {}
+          renderNoteArea(area, val, false);
+        };
+        input.addEventListener('blur', save);
+        input.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+          if (e.key === 'Escape') { renderNoteArea(area, note, false); }
+        });
+      } else if (note) {
+        area.innerHTML = `<span class="note-saved" title="Clique para editar">📌 ${escapeHtml(note)}</span>`;
+        area.querySelector('.note-saved').addEventListener('click', () => renderNoteArea(area, note, true));
+      } else {
+        area.innerHTML = `<span class="note-icon" title="Adicionar nota">✎</span>`;
+        area.querySelector('.note-icon').addEventListener('click', () => renderNoteArea(area, note, true));
+      }
     }
 
-    function initNoteInputs() {
-      document.querySelectorAll('.tx-note-input').forEach(input => {
-        let lastSaved = input.value;
-        input.addEventListener('blur', async () => {
-          const val = input.value.trim();
-          if (val === lastSaved) return;
-          input.classList.add('saving');
-          try {
-            store.txNotes[input.dataset.tx] = val;
-            await persist();
-            lastSaved = val;
-          } catch { input.value = lastSaved; }
-          input.classList.remove('saving');
-        });
+    function populateNoteInputs() {
+      document.querySelectorAll('.note-area').forEach(area => {
+        const note = store.txNotes[area.dataset.tx] || '';
+        renderNoteArea(area, note, false);
       });
     }
 
@@ -1158,7 +1195,6 @@
         await loadAll();
         renderGlobalComments();
         populateNoteInputs();
-        initNoteInputs();
       } catch {
         document.getElementById('comment-list').innerHTML =
           '<p class="no-comments">Erro ao carregar comentários.</p>';
