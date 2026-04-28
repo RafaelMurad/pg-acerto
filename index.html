@@ -881,6 +881,74 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
+    // ── Rendering ─────────────────────────────────────────────
+    function fmt(n) {
+      return 'R$' + n.toFixed(2)
+        .replace('.', ',')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function renderBuckets() {
+      BUCKETS.forEach(bucket => {
+        const container = document.getElementById('cards-' + bucket.id);
+        if (!container) return;
+
+        // Group transactions for this bucket by payer
+        const byPayer = {};
+        store.transactions
+          .filter(tx => tx.bucket === bucket.id)
+          .forEach(tx => {
+            if (!byPayer[tx.paidBy]) byPayer[tx.paidBy] = [];
+            byPayer[tx.paidBy].push(tx);
+          });
+
+        container.innerHTML = Object.entries(byPayer).map(([payer, txs]) => {
+          const color      = PEOPLE_COLORS[payer] || 'coral';
+          const label      = PEOPLE_LABELS[payer] || payer;
+          const total      = txs.reduce((s, tx) => s + tx.amount, 0);
+          const perPerson  = txs.reduce((s, tx) => s + tx.amount / tx.splitAmong.length, 0);
+
+          const rows = txs.map(tx => {
+            const dateCell = tx.date
+              ? `<td class="td-date">${tx.date}</td>`
+              : '';
+            const compBtn = tx.comprovante
+              ? ` <button class="comp-btn" onclick="openLightbox('${tx.comprovante}')">comprovante</button>`
+              : '';
+            return `<tr data-tx-id="${tx.id}">
+              ${dateCell}
+              <td class="td-desc" contenteditable="true" data-tx="${tx.id}" spellcheck="false">${escapeHtml(tx.desc)}</td>
+              <td class="td-amount">${fmt(tx.amount)}${compBtn}</td>
+              <td class="td-actions">
+                <button class="row-btn edit-btn" onclick="openEditModal('${tx.id}')" title="Editar">✏️</button>
+                <button class="row-btn del-btn"  onclick="deleteTx('${tx.id}')"      title="Remover">🗑️</button>
+              </td>
+            </tr>`;
+          }).join('');
+
+          return `<div class="card">
+            <div class="card-head">
+              <div>
+                <div class="label accent-${color}">Pago por</div>
+                <div class="paid-by">
+                  <span class="chip ${payer}">${label}</span>
+                  <span class="paid-by-amount" id="paid-amount-${payer}-${bucket.id}">${fmt(total)}</span>
+                </div>
+              </div>
+            </div>
+            <table><tbody id="tbody-${payer}-${bucket.id}">${rows}</tbody></table>
+            <div class="card-foot">
+              <span class="label">Por pessoa</span>
+              <span class="per-person ${color}" id="per-person-${payer}-${bucket.id}">${fmt(perPerson)} cada</span>
+            </div>
+          </div>`;
+        }).join('');
+      });
+
+      // Re-attach contenteditable listeners after re-render
+      initEditableDescs();
+    }
+
     // ── JSONBin ───────────────────────────────────────────────────
     const JSONBIN_KEY    = '$2a$10$Ta.YdXUKu1Af6js5lZ9BnesxxJA1iY1QH.1dnl/uubzUHdr9ogKbK';
     const JSONBIN_BIN_ID = '69f0d0bbaaba8821974a07dd';
@@ -994,27 +1062,25 @@
     // ── Editable descriptions ─────────────────────────────────────
     function initEditableDescs() {
       document.querySelectorAll('.td-desc[data-tx]').forEach(cell => {
-        const txId  = cell.dataset.tx;
-        const orig  = cell.textContent.trim();
+        const txId = cell.dataset.tx;
+        const tx   = store.transactions.find(t => t.id === txId);
+        if (!tx) return;
 
-        // Populate saved text if exists
-        if (store.txNotes[txId]) cell.textContent = store.txNotes[txId];
-
-        let lastSaved = cell.textContent;
+        let lastSaved = tx.desc;
 
         cell.addEventListener('keydown', e => {
-          if (e.key === 'Enter') { e.preventDefault(); cell.blur(); }
+          if (e.key === 'Enter')  { e.preventDefault(); cell.blur(); }
           if (e.key === 'Escape') { cell.textContent = lastSaved; cell.blur(); }
         });
 
         cell.addEventListener('blur', async () => {
-          const val = cell.textContent.trim() || orig;
-          cell.textContent = val; // normalize
+          const val = cell.textContent.trim() || lastSaved;
+          cell.textContent = val;
           if (val === lastSaved) return;
-          store.txNotes[txId] = val === orig ? '' : val;
+          tx.desc = val;
+          lastSaved = val;
           try {
             await persist();
-            lastSaved = val;
             cell.classList.add('saved-flash');
             setTimeout(() => cell.classList.remove('saved-flash'), 500);
           } catch {}
@@ -1051,8 +1117,8 @@
       }
       try {
         await loadAll();
+        renderBuckets();
         renderGlobalComments();
-        initEditableDescs();
       } catch {
         document.getElementById('comment-list').innerHTML =
           '<p class="no-comments">Erro ao carregar comentários.</p>';
