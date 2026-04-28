@@ -1095,7 +1095,6 @@ tr:focus-within .td-actions {
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
     // ── Rendering ─────────────────────────────────────────────
     function fmt(n) {
@@ -1499,6 +1498,127 @@ tr:focus-within .td-actions {
       }
       btn.textContent = 'Enviar'; btn.disabled = false;
     });
+
+// ── Transaction CRUD ──────────────────────────────────────
+let _editingTxId = null;
+
+function openAddModal() {
+  _editingTxId = null;
+  document.getElementById('modal-title').textContent = 'Nova transação';
+  document.getElementById('m-date').value   = '';
+  document.getElementById('m-desc').value   = '';
+  document.getElementById('m-amount').value = '';
+  document.getElementById('m-bucket').value = 'pg';
+  // Payer: deselect all
+  document.querySelectorAll('#m-paidby .person-toggle').forEach(btn => {
+    btn.className = 'person-toggle';
+  });
+  // Split: select all by default
+  document.querySelectorAll('#m-split .person-toggle').forEach(btn => {
+    btn.classList.add('active-' + btn.dataset.person);
+  });
+  document.getElementById('tx-modal').classList.add('open');
+  document.getElementById('m-date').focus();
+}
+
+function openEditModal(txId) {
+  const tx = store.transactions.find(t => t.id === txId);
+  if (!tx) return;
+  _editingTxId = txId;
+  document.getElementById('modal-title').textContent = 'Editar transação';
+  document.getElementById('m-date').value   = tx.date;
+  document.getElementById('m-desc').value   = tx.desc;
+  document.getElementById('m-amount').value = tx.amount;
+  document.getElementById('m-bucket').value = tx.bucket;
+  // Payer
+  document.querySelectorAll('#m-paidby .person-toggle').forEach(btn => {
+    btn.className = 'person-toggle';
+    if (btn.dataset.person === tx.paidBy) btn.classList.add('active-' + tx.paidBy);
+  });
+  // Split
+  document.querySelectorAll('#m-split .person-toggle').forEach(btn => {
+    btn.className = 'person-toggle';
+    if (tx.splitAmong.includes(btn.dataset.person)) btn.classList.add('active-' + btn.dataset.person);
+  });
+  document.getElementById('tx-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('tx-modal').classList.remove('open');
+  _editingTxId = null;
+}
+
+function selectPayer(btn) {
+  document.querySelectorAll('#m-paidby .person-toggle').forEach(b => b.className = 'person-toggle');
+  btn.classList.add('active-' + btn.dataset.person);
+}
+
+function toggleSplit(btn) {
+  const cls = 'active-' + btn.dataset.person;
+  if (btn.classList.contains(cls)) {
+    btn.classList.remove(cls);
+  } else {
+    btn.classList.add(cls);
+  }
+}
+
+async function saveTx() {
+  const date   = document.getElementById('m-date').value.trim();
+  const desc   = document.getElementById('m-desc').value.trim();
+  const amount = parseFloat(document.getElementById('m-amount').value);
+  const bucket = document.getElementById('m-bucket').value;
+  const payerBtn  = document.querySelector('#m-paidby .person-toggle[class*="active-"]');
+  const splitBtns = document.querySelectorAll('#m-split .person-toggle[class*="active-"]');
+
+  if (!desc)                  { alert('Preencha a descrição.'); return; }
+  if (!amount || amount <= 0) { alert('Valor inválido.'); return; }
+  if (!payerBtn)              { alert('Selecione quem pagou.'); return; }
+  if (splitBtns.length === 0) { alert('Selecione ao menos uma pessoa no split.'); return; }
+
+  const paidBy     = payerBtn.dataset.person;
+  const splitAmong = Array.from(splitBtns).map(b => b.dataset.person);
+
+  const btn = document.getElementById('modal-save-btn');
+  btn.textContent = 'Salvando…'; btn.disabled = true;
+
+  if (_editingTxId) {
+    const tx = store.transactions.find(t => t.id === _editingTxId);
+    Object.assign(tx, { date, desc, amount, bucket, paidBy, splitAmong });
+  } else {
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    store.transactions.push({ id, date, desc, amount, bucket, paidBy, splitAmong, comprovante: null });
+  }
+
+  try {
+    await persist();
+    closeModal();
+    renderBuckets();
+    recalculate();
+  } catch {
+    alert('Erro ao salvar. Tenta de novo.');
+  }
+  btn.textContent = 'Salvar'; btn.disabled = false;
+}
+
+async function deleteTx(txId) {
+  if (!confirm('Remover esta transação?')) return;
+  store.transactions = store.transactions.filter(t => t.id !== txId);
+  try {
+    await persist();
+    renderBuckets();
+    recalculate();
+  } catch {
+    alert('Erro ao remover. Tenta de novo.');
+  }
+}
+
+// Combined Escape key handler (replaces old closeLightbox-only listener)
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeLightbox();
+  }
+});
   </script>
 </body>
 </html>
