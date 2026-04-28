@@ -46,6 +46,7 @@
     .shell > *:nth-child(3) { animation-delay: 0.25s; }
     .shell > *:nth-child(4) { animation-delay: 0.35s; }
     .shell > *:nth-child(5) { animation-delay: 0.45s; }
+    .shell > *:nth-child(6) { animation-delay: 0.55s; }
 
     /* Header */
     .header {
@@ -163,6 +164,7 @@
     .chip.ju { background: var(--pink); }
     .chip.higor { background: var(--teal); }
     .chip.joao { background: var(--gold); }
+    .chip.default { background: var(--ink-soft); }
 
     /* Bucket sections */
     .buckets {
@@ -394,6 +396,196 @@
       color: var(--ink-soft);
     }
 
+    /* Comprovante button */
+    .comp-btn {
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 1px 6px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      vertical-align: middle;
+      margin-left: 6px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .comp-btn:hover {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 31, 20, 0.93);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 24px;
+      cursor: pointer;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 88vh;
+      border-radius: 8px;
+      object-fit: contain;
+      cursor: default;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--bg-soft);
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      font-weight: 300;
+    }
+    .lightbox-close:hover { background: var(--bg); }
+
+    /* Comments */
+    .comments {
+      padding: 40px 24px;
+      background: var(--ink);
+      color: var(--bg);
+    }
+    @media (max-width: 480px) {
+      .comments { padding: 28px 18px; }
+    }
+    .comments-head {
+      margin-bottom: 28px;
+    }
+    .comments-head .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .comments-head h3 {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-weight: 700;
+      font-size: clamp(20px, 4.5vw, 26px);
+      color: var(--bg);
+      margin: 0 0 6px;
+    }
+    .comments-head p {
+      font-size: 14px;
+      color: rgba(255, 250, 241, 0.55);
+      margin: 0;
+    }
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .comment-form input,
+    .comment-form textarea {
+      background: rgba(255, 250, 241, 0.08);
+      border: 1px solid rgba(255, 250, 241, 0.18);
+      border-radius: 6px;
+      padding: 11px 14px;
+      color: var(--bg);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 14px;
+      resize: none;
+      transition: border-color 0.15s;
+    }
+    .comment-form input::placeholder,
+    .comment-form textarea::placeholder {
+      color: rgba(255, 250, 241, 0.35);
+    }
+    .comment-form input:focus,
+    .comment-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .comment-form-row {
+      display: flex;
+      gap: 10px;
+    }
+    .comment-form-row input { flex: 1; }
+    .comment-send {
+      background: var(--gold);
+      color: var(--ink);
+      border: none;
+      border-radius: 6px;
+      padding: 11px 22px;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+    .comment-send:hover { opacity: 0.85; }
+    .comment-send:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .comment-item {
+      background: rgba(255, 250, 241, 0.07);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .comment-time {
+      font-size: 11px;
+      color: rgba(255, 250, 241, 0.4);
+    }
+    .comment-text {
+      font-size: 14px;
+      color: rgba(255, 250, 241, 0.82);
+      line-height: 1.55;
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .no-comments {
+      font-size: 14px;
+      color: rgba(255, 250, 241, 0.35);
+      font-style: italic;
+      margin: 0;
+      text-align: center;
+      padding: 24px 0;
+    }
+    .comments-not-configured {
+      font-size: 13px;
+      color: var(--gold);
+      background: rgba(196, 149, 68, 0.12);
+      border: 1px solid rgba(196, 149, 68, 0.3);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+
     /* Footer */
     footer {
       background: var(--ink);
@@ -403,6 +595,7 @@
       font-family: "Plus Jakarta Sans", sans-serif;
       font-style: italic;
       font-size: 14px;
+      border-top: 1px solid rgba(255,250,241,0.1);
     }
     footer .end { color: var(--gold); margin-bottom: 6px; }
     footer .note {
@@ -436,7 +629,7 @@
           <span class="arrow">→</span>
           <span class="chip lg rafa">Rafa</span>
         </div>
-        <div class="pix-amount">R$382,63</div>
+        <div class="pix-amount">R$469,89</div>
       </div>
       <div class="pix-row">
         <div class="pix-from">
@@ -444,7 +637,7 @@
           <span class="arrow">→</span>
           <span class="chip lg rafa">Rafa</span>
         </div>
-        <div class="pix-amount">R$292,75</div>
+        <div class="pix-amount">R$78,23</div>
       </div>
       <div class="pix-row">
         <div class="pix-from">
@@ -452,7 +645,7 @@
           <span class="arrow">→</span>
           <span class="chip lg joao">João</span>
         </div>
-        <div class="pix-amount">R$137,38</div>
+        <div class="pix-amount">R$50,11</div>
       </div>
     </section>
 
@@ -467,13 +660,14 @@
         </div>
         <p class="bucket-desc">Mercados, ubers, kiosk, pedágio e combustível da viagem. Todo mundo entra na divisão.</p>
 
+        <!-- Rafa's card -->
         <div class="card">
           <div class="card-head">
             <div>
               <div class="label accent-coral">Pago por</div>
               <div class="paid-by">
                 <span class="chip rafa">Rafa</span>
-                <span class="paid-by-amount">R$1.250,50</span>
+                <span class="paid-by-amount">R$1.210,50</span>
               </div>
             </div>
             <div>
@@ -483,29 +677,29 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Mp Nossocanto</td><td class="td-amount">R$231,00</td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Oxxo Xixova</td><td class="td-amount">R$17,29</td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Carrefour</td><td class="td-amount">R$370,05</td></tr>
-              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$15,00</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Mp Joseireneanto (kiosk)</td><td class="td-amount">R$200,00</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Nossocanto</td><td class="td-amount">R$20,00</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Burger King</td><td class="td-amount">R$77,70</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Uber</td><td class="td-amount">R$34,97</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Uber</td><td class="td-amount">R$35,98</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Tenda Atacado</td><td class="td-amount">R$19,74</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$7,88</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$30,16</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$81,75</td></tr>
-              <tr><td class="td-date">20/04</td><td class="td-desc">Mercado Extra</td><td class="td-amount">R$108,74</td></tr>
-              <tr><td class="td-date">21/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$0,24</td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Mp Nossocanto</td><td class="td-amount">R$231,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_01_mp_nossocanto.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Oxxo Xixova</td><td class="td-amount">R$17,29 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_02_oxxo_xixova.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Carrefour</td><td class="td-amount">R$370,05 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_04_carrefour.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$15,00 <button class="comp-btn" onclick="openLightbox('comprovantes/19apr_05_pao_de_acucar.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Kiosk — porção (÷4)</td><td class="td-amount">R$180,00</td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Burger King</td><td class="td-amount">R$77,70 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_02_burger_king.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Uber</td><td class="td-amount">R$34,97 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_03_uber_a.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Uber</td><td class="td-amount">R$35,98 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_04_uber_b.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Tenda Atacado</td><td class="td-amount">R$19,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_05_tenda_atacado.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$7,88 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_06_pao_de_acucar_a.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$30,16 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_07_pao_de_acucar_b.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$81,75 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_08_pao_de_acucar_c.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">20/04</td><td class="td-desc">Mercado Extra</td><td class="td-amount">R$108,74 <button class="comp-btn" onclick="openLightbox('comprovantes/20apr_09_mercado_extra.png')">comprovante</button></td></tr>
+              <tr><td class="td-date">21/04</td><td class="td-desc">Pão de Açúcar</td><td class="td-amount">R$0,24 <button class="comp-btn" onclick="openLightbox('comprovantes/21apr_01_pao_de_acucar.png')">comprovante</button></td></tr>
             </tbody>
           </table>
           <div class="card-foot">
             <span class="label">Por pessoa</span>
-            <span class="per-person coral">R$312,63 cada</span>
+            <span class="per-person coral">R$302,63 cada</span>
           </div>
         </div>
 
+        <!-- João's card -->
         <div class="card">
           <div class="card-head">
             <div>
@@ -522,7 +716,7 @@
           </div>
           <table>
             <tbody>
-              <tr><td class="td-desc">Combustível</td><td class="td-amount">R$350,00</td></tr>
+              <tr><td class="td-desc">Combustível</td><td class="td-amount">R$350,00 <button class="comp-btn" onclick="openLightbox('comprovantes/joao_combustivel.jpg')">comprovante</button></td></tr>
               <tr><td class="td-desc">Pedágio</td><td class="td-amount">R$200,00</td></tr>
               <tr><td class="td-desc">Reabastecimento almoço</td><td class="td-amount">R$50,00</td></tr>
             </tbody>
@@ -533,9 +727,36 @@
           </div>
         </div>
 
+        <!-- Ju's Uber card -->
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="label accent-pink">Pago por</div>
+              <div class="paid-by">
+                <span class="chip ju">Ju</span>
+                <span class="paid-by-amount">R$389,05</span>
+              </div>
+            </div>
+            <div>
+              <div class="label">Divisão</div>
+              <div class="split-note">÷ 4 (todos)</div>
+            </div>
+          </div>
+          <table>
+            <tbody>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Uber</td><td class="td-amount">R$189,99 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
+              <tr><td class="td-date">19/04</td><td class="td-desc">Uber</td><td class="td-amount">R$199,06 <button class="comp-btn" onclick="openLightbox('comprovantes/ju_ubers.jpg')">comprovante</button></td></tr>
+            </tbody>
+          </table>
+          <div class="card-foot">
+            <span class="label">Por pessoa</span>
+            <span class="per-person pink">R$97,26 cada</span>
+          </div>
+        </div>
+
         <div class="bucket-total">
           <span class="bucket-total-label">Total bucket Praia Grande</span>
-          <span class="bucket-total-value">R$1.850,50 — R$462,63 <span class="each">cada</span></span>
+          <span class="bucket-total-value">R$2.199,55 — R$549,89 <span class="each">cada</span></span>
         </div>
       </div>
 
@@ -546,7 +767,7 @@
           <h3 class="bucket-title">Caipirinhas + pastel</h3>
           <span class="bucket-people">÷ 2 (Rafa &amp; Ju)</span>
         </div>
-        <p class="bucket-desc">Só o Rafa e a Ju consumiram, então rachado entre os dois.</p>
+        <p class="bucket-desc">Só o Rafa e a Ju consumiram, então rachado entre os dois. (Kiosk — porção de R$180 já contabilizada no bucket 01.)</p>
 
         <div class="card">
           <div class="card-head">
@@ -634,39 +855,39 @@
           <tbody>
             <tr>
               <td><span class="chip rafa">Rafa</span></td>
-              <td class="num">R$462,63</td>
+              <td class="num">R$549,89</td>
               <td class="num">R$72,50</td>
               <td class="num">R$40,00</td>
-              <td class="num bold">R$575,13</td>
-              <td class="num">R$1.250,50</td>
-              <td class="num balance-cell pos">+R$675,38</td>
+              <td class="num bold">R$662,39</td>
+              <td class="num">R$1.210,50</td>
+              <td class="num balance-cell pos">+R$548,11</td>
             </tr>
             <tr>
               <td><span class="chip ju">Ju</span></td>
-              <td class="num">R$462,63</td>
+              <td class="num">R$549,89</td>
               <td class="num">R$72,50</td>
               <td class="num">R$40,00</td>
-              <td class="num bold">R$575,13</td>
-              <td class="num">R$145,00</td>
-              <td class="num balance-cell neg">−R$430,13</td>
+              <td class="num bold">R$662,39</td>
+              <td class="num">R$534,05</td>
+              <td class="num balance-cell neg">−R$128,34</td>
             </tr>
             <tr>
               <td><span class="chip higor">Higor</span></td>
-              <td class="num">R$462,63</td>
+              <td class="num">R$549,89</td>
               <td class="num muted">—</td>
               <td class="num">R$40,00</td>
-              <td class="num bold">R$502,63</td>
+              <td class="num bold">R$589,89</td>
               <td class="num">R$120,00</td>
-              <td class="num balance-cell neg">−R$382,63</td>
+              <td class="num balance-cell neg">−R$469,89</td>
             </tr>
             <tr>
               <td><span class="chip joao">João</span></td>
-              <td class="num">R$462,63</td>
+              <td class="num">R$549,89</td>
               <td class="num muted">—</td>
               <td class="num muted">—</td>
-              <td class="num bold">R$462,63</td>
+              <td class="num bold">R$549,89</td>
               <td class="num">R$600,00</td>
-              <td class="num balance-cell pos">+R$137,38</td>
+              <td class="num balance-cell pos">+R$50,11</td>
             </tr>
           </tbody>
         </table>
@@ -677,11 +898,171 @@
       </div>
     </section>
 
+    <!-- COMMENTS -->
+    <section class="comments">
+      <div class="comments-head">
+        <div class="eyebrow">💬 Notas</div>
+        <h3>Discordâncias & observações</h3>
+        <p>Dúvida? Contestação? Deixa aqui antes de mandar áudio.</p>
+      </div>
+      <div id="comments-warning" class="comments-not-configured" style="display:none;">
+        ⚠️ Comentários não configurados — abra o HTML e preencha <code>JSONBIN_KEY</code> e <code>JSONBIN_BIN_ID</code>.
+      </div>
+      <form id="comment-form" class="comment-form">
+        <div class="comment-form-row">
+          <input id="c-name" type="text" placeholder="Seu nome" maxlength="40" autocomplete="off" />
+          <button type="submit" id="c-submit" class="comment-send">Enviar</button>
+        </div>
+        <textarea id="c-text" rows="3" placeholder="Sua mensagem…" maxlength="500"></textarea>
+      </form>
+      <div id="comment-list" class="comment-list">
+        <p class="no-comments">Carregando…</p>
+      </div>
+    </section>
+
     <footer>
       <div class="end">fim</div>
-      <div class="note">Valores em reais. Saldo verificado: créditos = débitos (a menos de centavos de arredondamento). Discordâncias, manda no grupo do WhatsApp.</div>
+      <div class="note">Valores em reais. Saldo verificado: créditos = débitos (a menos de centavos de arredondamento). Discordâncias, usa a seção acima.</div>
     </footer>
 
   </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="event.stopPropagation();closeLightbox()">×</button>
+    <img id="lightbox-img" src="" alt="Comprovante" onclick="event.stopPropagation()">
+  </div>
+
+  <script>
+    // ── Lightbox ──────────────────────────────────────────────────
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // ── JSONBin comments ──────────────────────────────────────────
+    const JSONBIN_KEY    = '$2a$10$Ta.YdXUKu1Af6js5lZ9BnesxxJA1iY1QH.1dnl/uubzUHdr9ogKbK';
+    const JSONBIN_BIN_ID = '69f0d0bbaaba8821974a07dd';
+    const API_BASE       = 'https://api.jsonbin.io/v3/b';
+
+    const configured = () =>
+      JSONBIN_KEY !== 'COLE_SUA_MASTER_KEY_AQUI' &&
+      JSONBIN_BIN_ID !== 'COLE_SEU_BIN_ID_AQUI';
+
+    function nameToChip(name) {
+      const n = name.toLowerCase();
+      if (n.includes('rafa'))                       return 'rafa';
+      if (n.includes('ju') || n.includes('juliana')) return 'ju';
+      if (n.includes('higor'))                       return 'higor';
+      if (n.includes('jo'))                          return 'joao';
+      return 'default';
+    }
+
+    function escapeHtml(s) {
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function renderComments(comments) {
+      const list = document.getElementById('comment-list');
+      if (!comments.length) {
+        list.innerHTML = '<p class="no-comments">Sem comentários ainda — seja o primeiro.</p>';
+        return;
+      }
+      list.innerHTML = comments.map(c => {
+        const cls  = nameToChip(c.name);
+        const date = new Date(c.ts).toLocaleString('pt-BR', {
+          day: '2-digit', month: '2-digit',
+          hour: '2-digit', minute: '2-digit'
+        });
+        return `
+          <div class="comment-item">
+            <div class="comment-meta">
+              <span class="chip ${cls}">${escapeHtml(c.name)}</span>
+              <span class="comment-time">${date}</span>
+            </div>
+            <p class="comment-text">${escapeHtml(c.text)}</p>
+          </div>`;
+      }).join('');
+    }
+
+    async function loadComments() {
+      const r = await fetch(`${API_BASE}/${JSONBIN_BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': JSONBIN_KEY }
+      });
+      if (!r.ok) throw new Error('load failed');
+      const data = await r.json();
+      return data.record.comments || [];
+    }
+
+    async function saveComment(name, text) {
+      const comments = await loadComments();
+      comments.push({ name, text, ts: Date.now() });
+      const r = await fetch(`${API_BASE}/${JSONBIN_BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_KEY
+        },
+        body: JSON.stringify({ comments })
+      });
+      if (!r.ok) throw new Error('save failed');
+      return comments;
+    }
+
+    // Init
+    (async () => {
+      if (!configured()) {
+        document.getElementById('comments-warning').style.display = 'block';
+        document.getElementById('comment-list').innerHTML =
+          '<p class="no-comments">Configure o JSONBin para ativar comentários.</p>';
+        return;
+      }
+      try {
+        const comments = await loadComments();
+        renderComments(comments);
+      } catch {
+        document.getElementById('comment-list').innerHTML =
+          '<p class="no-comments">Erro ao carregar comentários.</p>';
+      }
+    })();
+
+    document.getElementById('comment-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      if (!configured()) {
+        alert('Preencha JSONBIN_KEY e JSONBIN_BIN_ID no HTML.');
+        return;
+      }
+      const nameEl = document.getElementById('c-name');
+      const textEl = document.getElementById('c-text');
+      const btn    = document.getElementById('c-submit');
+      const name   = nameEl.value.trim();
+      const text   = textEl.value.trim();
+      if (!name || !text) return;
+
+      btn.textContent = 'Enviando…';
+      btn.disabled = true;
+      try {
+        const comments = await saveComment(name, text);
+        nameEl.value = '';
+        textEl.value = '';
+        renderComments(comments);
+      } catch {
+        btn.textContent = 'Erro — tenta de novo';
+        setTimeout(() => { btn.textContent = 'Enviar'; btn.disabled = false; }, 2000);
+        return;
+      }
+      btn.textContent = 'Enviar';
+      btn.disabled = false;
+    });
+  </script>
 </body>
 </html>
