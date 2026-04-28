@@ -1121,10 +1121,28 @@
       });
       if (!r.ok) throw new Error('load failed');
       const data = await r.json();
+
+      let transactions = data.record.transactions;
+      if (!transactions || transactions.length === 0) {
+        // First load — seed from defaults, applying any saved txNotes renames
+        const saved = data.record.txNotes || {};
+        transactions = DEFAULT_TRANSACTIONS.map(tx => ({
+          ...tx,
+          desc: saved[tx.id] || tx.desc
+        }));
+      }
+
       store = {
-        comments: data.record.comments || [],
-        txNotes:  data.record.txNotes  || {}
+        comments:     data.record.comments     || [],
+        txNotes:      data.record.txNotes      || {},
+        transactions
       };
+
+      // If we just seeded, persist immediately so future loads skip seeding
+      if (!data.record.transactions || data.record.transactions.length === 0) {
+        await persist();
+      }
+
       return store;
     }
 
