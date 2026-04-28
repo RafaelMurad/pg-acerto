@@ -1050,7 +1050,7 @@
     const JSONBIN_BIN_ID = '69f0d0bbaaba8821974a07dd';
     const API_BASE       = 'https://api.jsonbin.io/v3/b';
 
-    // store: { comments: [], txNotes: {} }
+    // store: { comments: [], txNotes: {}, transactions: [] }
     let store = null;
 
     const configured = () =>
@@ -1075,6 +1075,45 @@
         day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'
       });
     }
+
+    // ── Trip constants ────────────────────────────────────────
+    const PEOPLE = ['rafa','ju','higor','joao'];
+    const PEOPLE_LABELS = { rafa:'Rafa', ju:'Ju', higor:'Higor', joao:'João' };
+    const PEOPLE_COLORS = { rafa:'coral', ju:'pink', higor:'teal', joao:'gold' };
+    const BUCKETS = [
+      { id:'pg',    label:'Praia Grande',        num:'01' },
+      { id:'caipi', label:'Caipirinhas + pastel', num:'02' },
+      { id:'aqa',   label:'Araraquara',           num:'03' },
+    ];
+
+    const DEFAULT_TRANSACTIONS = [
+      // ── Rafa (PG) ──
+      { id:'rafa-nossocanto', bucket:'pg', date:'18/04', desc:'Mp Nossocanto',                   amount:231.00, paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/19apr_01_mp_nossocanto.png' },
+      { id:'rafa-oxxo',       bucket:'pg', date:'18/04', desc:'Oxxo Xixova',                     amount:17.29,  paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/19apr_02_oxxo_xixova.png' },
+      { id:'rafa-carrefour',  bucket:'pg', date:'18/04', desc:'Carrefour',                        amount:370.05, paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/19apr_04_carrefour.png' },
+      { id:'rafa-pao-15',     bucket:'pg', date:'18/04', desc:'Pão de Açúcar',                   amount:15.00,  paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/19apr_05_pao_de_acucar.png' },
+      { id:'rafa-bk',         bucket:'pg', date:'19/04', desc:'Burger King',                     amount:77.70,  paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/20apr_02_burger_king.png' },
+      { id:'rafa-uber-a',     bucket:'pg', date:'19/04', desc:'Uber',                            amount:34.97,  paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/20apr_03_uber_a.png' },
+      { id:'rafa-uber-b',     bucket:'pg', date:'19/04', desc:'Uber',                            amount:35.98,  paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/20apr_04_uber_b.png' },
+      { id:'rafa-tenda',      bucket:'pg', date:'19/04', desc:'Tenda Atacado',                   amount:19.74,  paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/20apr_05_tenda_atacado.png' },
+      { id:'rafa-pao-8175',   bucket:'pg', date:'19/04', desc:'Pão de Açúcar — cervejas, último dia', amount:81.75, paidBy:'rafa', splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/20apr_08_pao_de_acucar_c.png' },
+      { id:'rafa-extra',      bucket:'pg', date:'19/04', desc:'Mercado Extra',                   amount:108.74, paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/20apr_09_mercado_extra.png' },
+      { id:'rafa-kiosk',      bucket:'pg', date:'20/04', desc:'Kiosk — porção (÷4)',             amount:180.00, paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/kiosk_porcao.png' },
+      { id:'rafa-pao-024',    bucket:'pg', date:'20/04', desc:'Pão de Açúcar',                   amount:0.24,   paidBy:'rafa',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/21apr_01_pao_de_acucar.png' },
+      // ── João (PG) ──
+      { id:'joao-comb',       bucket:'pg', date:'',      desc:'Combustível',                     amount:350.00, paidBy:'joao',  splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/joao_combustivel.jpg' },
+      { id:'joao-pedagio',    bucket:'pg', date:'',      desc:'Pedágio',                         amount:200.00, paidBy:'joao',  splitAmong:['rafa','ju','higor','joao'], comprovante:null },
+      { id:'joao-reab',       bucket:'pg', date:'',      desc:'Reabastecimento almoço',          amount:50.00,  paidBy:'joao',  splitAmong:['rafa','ju','higor','joao'], comprovante:null },
+      // ── Ju (PG) ──
+      { id:'ju-uber-a',       bucket:'pg', date:'18/04', desc:'Uber',                            amount:189.99, paidBy:'ju',    splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/ju_ubers.jpg' },
+      { id:'ju-uber-b',       bucket:'pg', date:'18/04', desc:'Uber',                            amount:199.06, paidBy:'ju',    splitAmong:['rafa','ju','higor','joao'], comprovante:'comprovantes/ju_ubers.jpg' },
+      // ── Ju (Caipi) ──
+      { id:'ju-caipi',        bucket:'caipi', date:'',   desc:'3 caipirinhas (R$40 cada)',        amount:120.00, paidBy:'ju',    splitAmong:['rafa','ju'],               comprovante:null },
+      { id:'ju-pastel',       bucket:'caipi', date:'',   desc:'Pastel',                           amount:25.00,  paidBy:'ju',    splitAmong:['rafa','ju'],               comprovante:null },
+      // ── Higor (AQA) ──
+      { id:'higor-pedagio',   bucket:'aqa',   date:'',   desc:'Pedágio',                         amount:70.00,  paidBy:'higor', splitAmong:['rafa','ju','higor'],        comprovante:null },
+      { id:'higor-comb',      bucket:'aqa',   date:'',   desc:'Combustível',                     amount:50.00,  paidBy:'higor', splitAmong:['rafa','ju','higor'],        comprovante:null },
+    ];
 
     async function loadAll() {
       const r = await fetch(`${API_BASE}/${JSONBIN_BIN_ID}/latest`, {
